@@ -16,6 +16,10 @@ const ChangePassword = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        window.document.title = 'Change password'
+    }, [])
+
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 

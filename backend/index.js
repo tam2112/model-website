@@ -3,6 +3,7 @@ const express = require('express')
 const app = express();
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const axios = require('axios');
 const multer = require('multer')
 const path = require('path')
 const cors = require('cors')
@@ -861,10 +862,24 @@ app.get('/allusers', async (req, res) => {
     res.send(users);
 })
 
+const RECAPTCHA_SECRET_KEY = '6Le9ouEpAAAAAHp7VduQ_TBFF92HfX7WWoihrUf7';
+
+async function verifyCaptcha(token) {
+    const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${token}`);
+    return response.data.success;
+}
+
 // Creating Endpoint for registering the user
 app.post('/signup', async (req, res) => {
     try {
-        let check = await Users.findOne({ email: req.body.email });
+        const { name, email, password, captchaToken } = req.body;
+
+        const isCaptchaValid = await verifyCaptcha(captchaToken);
+        if (!isCaptchaValid) {
+            return res.status(400).json({ success: false, errors: 'Invalid CAPTCHA' });
+        }
+
+        let check = await Users.findOne({ email });
         if (check) {
             return res.status(400).json({ success: false, errors: 'existing user found with same email address' });
         }
@@ -880,11 +895,11 @@ app.post('/signup', async (req, res) => {
         }
 
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const user = new Users({
-            name: req.body.name,
-            email: req.body.email,
+            name,
+            email,
             password: hashedPassword,
             cartData: cart,
             wishlistData: wishlist,
@@ -910,9 +925,16 @@ app.post('/signup', async (req, res) => {
 // creating endpoint for user login
 app.post('/login', async (req, res) => {
     try {
-        let user = await Users.findOne({ email: req.body.email });
+        const { email, password, captchaToken } = req.body;
+
+        const isCaptchaValid = await verifyCaptcha(captchaToken);
+        if (!isCaptchaValid) {
+            return res.status(400).json({ success: false, errors: 'Invalid CAPTCHA' });
+        }
+
+        let user = await Users.findOne({ email });
         if (user) {
-            const passCompare = await bcrypt.compare(req.body.password, user.password);
+            const passCompare = await bcrypt.compare(password, user.password);
             if (passCompare) {
                 const data = {
                     user: {

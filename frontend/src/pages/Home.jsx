@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     Hero,
     Banner,
@@ -11,6 +12,10 @@ import {
 } from '../components';
 
 const Home = () => {
+    useEffect(() => {
+        window.document.title = 'Home Page'
+    }, [])
+
     return (
         <>
             <Hero />

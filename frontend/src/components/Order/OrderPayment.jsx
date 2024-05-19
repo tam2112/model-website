@@ -30,6 +30,10 @@ const OrderPayment = () => {
     }
 
     useEffect(() => {
+        window.document.title = 'Order Payment'
+    }, [])
+
+    useEffect(() => {
         fetchAllPayments();
         fetchAllPays();
 

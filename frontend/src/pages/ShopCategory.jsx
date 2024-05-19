@@ -8,6 +8,10 @@ const ShopCategory = (props) => {
     const [visibleProducts, setVisibleProducts] = useState(10);
 
     useEffect(() => {
+        window.document.title = `${props.title} Clothing`
+    }, [props.categoryId])
+
+    useEffect(() => {
         const filteredProducts = all_product.filter((item) => item.category === props.categoryId);
 
         setVisibleProducts(filteredProducts.length > 10 ? 10 : filteredProducts.length);

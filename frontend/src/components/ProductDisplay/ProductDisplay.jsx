@@ -21,6 +21,10 @@ const ProductDisplay = (props) => {
     const { addToCart, addToWishlist, removeFromWishlist, wishlistItems, setWishlistItems } = useContext(ShopContext);
 
     useEffect(() => {
+        window.document.title = product.name
+    }, [])
+
+    useEffect(() => {
         const updateSlidesPerView = () => {
             if (window.innerWidth > 1024) {
                 setSlidesPerView(2);

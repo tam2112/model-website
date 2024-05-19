@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import Swal from 'sweetalert2';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import BannerImg from '../components/Assets/banner/sign-in.jpg';
 
@@ -18,6 +19,7 @@ const LoginSignup = () => {
         password: false,
     });
     const [passwordError, setPasswordError] = useState('');
+    const [captchaToken, setCaptchaToken] = useState(null);
 
     const changeHandler = (e) => {
         const { name, value } = e.target;
@@ -47,6 +49,10 @@ const LoginSignup = () => {
         setShowPassword(!showPassword);
     }
 
+    const onCaptchaChange = (token) => {
+        setCaptchaToken(token);
+    };
+
     const login = async () => {
         console.log('Login Func Executed', formData);
 
@@ -60,6 +66,16 @@ const LoginSignup = () => {
             return;
         }
 
+        if (!captchaToken) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo',
+                text: 'Vui lòng xác minh CAPTCHA',
+                position: 'center',
+            })
+            return;
+        }
+
         let responseData;
         await fetch('http://localhost:5000/login', {
             method: 'POST',
@@ -67,7 +83,7 @@ const LoginSignup = () => {
                 Accept: 'application/form-data',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify({ ...formData, captchaToken })
         }).then((res) => res.json()).then((data) => responseData = data)
 
         if (responseData.success) {
@@ -108,6 +124,16 @@ const LoginSignup = () => {
             })
             return;
         }
+
+        if (!captchaToken) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Thông báo',
+                text: 'Vui lòng xác minh CAPTCHA',
+                position: 'center',
+            })
+            return;
+        }
         
         let responseData;
         await fetch('http://localhost:5000/signup', {
@@ -116,7 +142,7 @@ const LoginSignup = () => {
                 Accept: 'application/form-data',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify({ ...formData, captchaToken })
         }).then((res) => res.json()).then((data) => responseData = data)
 
         if (responseData.success) {
@@ -212,6 +238,10 @@ const LoginSignup = () => {
                                             <p className='text-red-500 text-sm mt-1 select-none'>{passwordError}</p>
                                         )}
                                     </div>
+                                    <ReCAPTCHA
+                                        sitekey="6Le9ouEpAAAAAFRwgXd3W4s6t8FySSGJKKMWPm0C"
+                                        onChange={onCaptchaChange}
+                                    />
                                     {state === 'Login' ? <p className="text-right font-semibold cursor-pointer">Forgot Password?</p> : <></>}
                                 </div>
                                 <button onClick={() => { state === 'Login' ? login() : signup() }} className="btn-primary bg-primary text-white border-none hover:border-none py-4 hover:bg-primary/80">

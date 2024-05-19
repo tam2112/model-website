@@ -36,6 +36,11 @@ const MyProfile = () => {
     const [isEditingAddress, setIsEditingAddress] = useState(false);
 
     useEffect(() => {
+        window.document.title = 'My profile'
+        window.scrollTo(0, 0)
+    }, [])
+
+    useEffect(() => {
         axios.get(`http://localhost:5000/detailsuser/${userId}`)
             .then(response => {
                 const fetchedUser = response.data.user;

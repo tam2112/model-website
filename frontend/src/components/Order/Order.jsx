@@ -19,6 +19,10 @@ const Order = () => {
     });
 
     useEffect(() => {
+        window.document.title = 'Order Page'
+    }, [])
+
+    useEffect(() => {
         window.scrollTo(0, 0);
     }, [])
 
