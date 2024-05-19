@@ -1,0 +1,5 @@
+export { default as AddCategory } from './AddCategory/AddCategory'
+export { default as DetailsCategory } from './DetailsCategory/DetailsCategory'
+export { default as UpdateCategory } from './UpdateCategory/UpdateCategory'
+export { default as ListCategory } from './ListCategory/ListCategory'
+export { default as RestoreCategory } from './RestoreCategory/RestoreCategory'

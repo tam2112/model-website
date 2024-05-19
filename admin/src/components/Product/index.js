@@ -1,0 +1,5 @@
+export { default as AddProduct } from './AddProduct/AddProduct'
+export { default as DetailsProduct } from './DetailsProduct/DetailsProduct'
+export { default as ListProduct } from './ListProduct/ListProduct'
+export { default as UpdateProduct } from './UpdateProduct/UpdateProduct'
+export { default as RestoreProduct } from './RestoreProduct/RestoreProduct'

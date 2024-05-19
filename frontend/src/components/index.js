@@ -1,0 +1,11 @@
+export { default as Banner } from './Banner/Banner';
+export { default as BlogComp } from './BlogComp/BlogComp';
+export { default as Explore } from './Explore/Explore';
+export { default as Hero } from './Hero/Hero';
+export { default as Navbar } from './Navbar/Navbar';
+export { default as Footer } from './Footer/Footer';
+export { default as NewIn } from './NewIn/NewIn';
+export { default as Newsletter } from './Newsletter/Newsletter';
+export { default as Testimonial } from './Testimonial/Testimonial';
+export { default as TrendingProd } from './TrendingProd/TrendingProd';
+export { default as UpcomingProd } from './UpcomingProd/UpcomingProd';

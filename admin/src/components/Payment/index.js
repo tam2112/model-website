@@ -1,0 +1,5 @@
+export { default as ListPayment } from './ListPayment/ListPayment'
+export { default as AddPayment } from './AddPayment/AddPayment'
+export { default as DetailsPayment } from './DetailsPayment/DetailsPayment'
+export { default as RestorePayment } from './RestorePayment/RestorePayment'
+export { default as UpdatePayment } from './UpdatePayment/UpdatePayment'
