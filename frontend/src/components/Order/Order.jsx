@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Link } from "react-router-dom"
 
 const Order = () => {
-    const { getTotalCartAmount, userInfo, setUserInfo } = useContext(ShopContext)
+    const { getTotalCartAmount, userInfo, setUserInfo, selectedPayment, selectedPay, selectedProducts, addOrder } = useContext(ShopContext)
     const userId = localStorage.getItem('userId')
     const [user, setUser] = useState({
         name: '',
@@ -61,6 +61,17 @@ const Order = () => {
 
     };
     console.log(userInfo);
+
+    const handleOrder = async () => {
+        try {
+            // Thực hiện đặt hàng
+            await addOrder(userId, userInfo, selectedProducts, selectedPayment, selectedPay, getTotalCartAmount(), Object.keys(selectedProducts).length);
+
+            window.location.href = '/myorders';
+        } catch (error) {
+            console.error('Error placing order:', error);
+        }
+    };
 
     return (
         <>
@@ -141,7 +152,8 @@ const Order = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="mt-8">
+                                        <div className="space-y-4 space-x-6 mt-8">
+                                            <button onClick={handleOrder} className="btn-primary">ORDER NOW</button>
                                             <Link to={'/orderpayment'}>
                                                 <button className='btn-primary'>PROCEED TO PAYMENT</button>
                                             </Link>
