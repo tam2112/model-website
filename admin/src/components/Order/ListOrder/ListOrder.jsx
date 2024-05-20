@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Box from '../../../assets/box.png'
 import OrderItem from './OrderItem'
 import Swal from "sweetalert2";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 const ListOrder = ({ showSidebar }) => {
     const [allOrders, setAllOrders] = useState([]);
@@ -71,6 +72,51 @@ const ListOrder = ({ showSidebar }) => {
           console.error('Error updating order status:', error);
         }
     };
+
+    const remove_order = async (id) => {
+        await fetch('http://localhost:5000/removeorder', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ _id: id })
+        }).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Thông báo',
+                text: 'Delete success',
+                position: 'center',
+            });
+        })
+        await fetchInfo();
+    }
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [orderIdToRemove, setOrderIdToRemove] = useState(null);
+
+    const openConfirmation = (orderId) => {
+        setOrderIdToRemove(orderId);
+        setShowConfirmation(true);
+    }
+    
+    const closeConfirmation = () => {
+        setShowConfirmation(false);
+    }
+
+    const confirmDelete = async () => {
+        await remove_order(orderIdToRemove);
+        closeConfirmation();
+    }
+    
+    const cancelDelete = () => {
+        closeConfirmation();
+    }
+
+    const getStatusName = (statusId) => {
+        const status = allStatus.find(status => status._id === statusId)
+        return status ? status.name : ''
+    }
     
     const [selectedStatus, setSelectedStatus] = useState('')
     
@@ -79,7 +125,7 @@ const ListOrder = ({ showSidebar }) => {
     };
 
     const filteredOrders = selectedStatus ? allOrders.filter((order) => order.status === selectedStatus) : allOrders;
-    
+
     return (
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
@@ -141,16 +187,20 @@ const ListOrder = ({ showSidebar }) => {
                                                     <p>${order.total.toFixed(2)}</p>
                                                 </div>
                                                 <div className="grid place-items-center">
-                                                    <select 
+                                                    {getStatusName(order.status) !== 'Cancelled' && <select 
                                                         value={order.status} 
                                                         name="status"
-                                                        className="border-[1px] border-primary px-2 py-1"
+                                                        className="border-[1px] border-primary px-2 py-1 rounded-sm disabled:cursor-not-allowed"
                                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                                                        disabled={getStatusName(order.status) === 'Cancelled'}
                                                     >
-                                                        {allStatus.map(status => (
-                                                            <option key={status._id} value={status._id}>{status.name}</option>
+                                                        {allStatus
+                                                            .filter(status => status.name !== 'Cancelled')
+                                                            .map(status => (
+                                                                <option key={status._id} value={status._id}>{status.name}</option>
                                                         ))}
-                                                    </select>
+                                                    </select>}
+                                                    {getStatusName(order.status) === 'Cancelled' && <p className="border-[1px] border-red-500 text-white bg-red-500 px-4 py-2 rounded-md">{getStatusName(order.status)}</p>}
                                                 </div>
                                                     <div className="grid place-items-center">
                                                         <Link to={`/detailsorder/${order._id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300">
@@ -159,6 +209,12 @@ const ListOrder = ({ showSidebar }) => {
                                                                 <TbListDetails />
                                                             </div>
                                                         </Link>
+                                                        {getStatusName(order.status) === 'Cancelled' && <div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
+                                                            <div className="flex items-center gap-1">
+                                                                Delete
+                                                                <RiDeleteBinLine />
+                                                            </div>
+                                                        </div>}
                                                     </div>
                                                 </div>
                                         </div>
@@ -169,6 +225,18 @@ const ListOrder = ({ showSidebar }) => {
                     </div>
                 </div>
             </div>
+
+            {showConfirmation && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                    <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
+                        <p className="sm:text-lg text-sm">Are you sure you want to delete this order?</p>
+                        <div className="flex justify-end mt-4">
+                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmDelete}>Yes</button>
+                            <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>No</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

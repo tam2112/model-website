@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react";
 
 import { TfiReload } from "react-icons/tfi";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { ImUserCheck } from "react-icons/im";
 
-import Box from '../../components/Assets/box.png'
-import { ShopContext } from "../../Context/ShopContext"
-import OrderItem from "./OrderItem"
+import Box from '../../components/Assets/box.png';
+import { ShopContext } from "../../Context/ShopContext";
+import OrderItem from "./OrderItem";
 
 const MyOrders = () => {
-    const [allOrders, setAllOrders] = useState([])
-    const [allStatus, setAllStatus] = useState([])
-    const [allProducts, setAllProducts] = useState([])
-    const { userId } = useContext(ShopContext)
+    const [allOrders, setAllOrders] = useState([]);
+    const [allStatus, setAllStatus] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
+    const { userId } = useContext(ShopContext);
 
     const fetchAllOrders = async () => {
         await fetch('http://localhost:5000/allorders')
@@ -20,71 +20,75 @@ const MyOrders = () => {
         .then(data => {
             // Sort data by date in descending order (newest to oldest)
             data.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            setAllOrders(data)
-        })
-    }
+            setAllOrders(data);
+        });
+    };
 
     const fetchAllStatus = async () => {
         await fetch('http://localhost:5000/allstatus')
         .then(res => res.json())
-        .then(data => setAllStatus(data))
-    }
+        .then(data => setAllStatus(data));
+    };
 
     const fetchAllProducts = async () => {
         await fetch('http://localhost:5000/allproducts')
         .then(res => res.json())
-        .then(data => setAllProducts(data))
-    }
+        .then(data => setAllProducts(data));
+    };
 
     useEffect(() => {
         fetchAllOrders();
         fetchAllStatus();
         fetchAllProducts();
-    }, [])
+    }, []);
 
-    const remove_order = async (id) => {
-        await fetch('http://localhost:5000/removeorder', {
-            method: 'POST',
+    const cancelOrder = async (id) => {
+        // Fetch the "Cancelled" status ID
+        const cancelledStatus = allStatus.find(status => status.name === 'Cancelled');
+        if (!cancelledStatus) {
+            console.error('Cancelled status not found');
+            return;
+        }
+        
+        await fetch(`http://localhost:5000/updateorderstatus/${id}`, {
+            method: 'PUT',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ _id: id })
-        })
+            body: JSON.stringify({ status: cancelledStatus._id })
+        });
         await fetchAllOrders();
-    }
+    };
 
     const getStatusName = (statusId) => {
-        const status = allStatus.find(status => status._id === statusId)
-        return status ? status.name : ''
-    }
+        const status = allStatus.find(status => status._id === statusId);
+        return status ? status.name : '';
+    };
 
-    const filterOrders = allOrders.filter(order => order.userData === userId)
+    // Filter out orders with "Cancelled" status
+    const filterOrders = allOrders.filter(order => order.userData === userId && getStatusName(order.status) !== 'Cancelled');
 
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [orderIdToRemove, setOrderIdToRemove] = useState(null);
+    const [orderIdToCancel, setOrderIdToCancel] = useState(null);
 
     const openConfirmation = (orderId) => {
-        setOrderIdToRemove(orderId);
+        setOrderIdToCancel(orderId);
         setShowConfirmation(true);
-    }
+    };
     
     const closeConfirmation = () => {
         setShowConfirmation(false);
-    }
+    };
 
-    const confirmDelete = async () => {
-        await remove_order(orderIdToRemove);
+    const confirmCancel = async () => {
+        await cancelOrder(orderIdToCancel);
         closeConfirmation();
-    }
+    };
     
     const cancelDelete = () => {
         closeConfirmation();
-    }
-    
-    
-
+    };
 
     return (
         <>
@@ -106,14 +110,14 @@ const MyOrders = () => {
                                                         {order.productData.map((item, index) => (
                                                             <div key={index}>
                                                                 {Object.keys(item).map(productId => {
-                                                                    const product = allProducts.find(p => p.id === parseInt(productId))
-                                                                    const { quantity, size } = item[productId]
+                                                                    const product = allProducts.find(p => p.id === parseInt(productId));
+                                                                    const { quantity, size } = item[productId];
                                                                     
                                                                     return (
                                                                         <div key={productId}>
                                                                             <OrderItem product={product} quantity={quantity} size={size} />
                                                                         </div>
-                                                                    )
+                                                                    );
                                                                 })}
                                                             </div>
                                                         ))}
@@ -161,17 +165,16 @@ const MyOrders = () => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
-                        <p className="sm:text-lg text-sm">Are you sure you want to delete this order?</p>
+                        <p className="sm:text-lg text-sm">Are you sure you want to cancel this order?</p>
                         <div className="flex justify-end mt-4">
-                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmDelete}>Yes</button>
+                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmCancel}>Yes</button>
                             <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>No</button>
                         </div>
                     </div>
                 </div>
             )}
-
         </>
-    )
-}
+    );
+};
 
-export default MyOrders
+export default MyOrders;

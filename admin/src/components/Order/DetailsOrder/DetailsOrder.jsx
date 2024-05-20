@@ -144,8 +144,8 @@ const DetailsOrder = ({ showSidebar }) => {
                                         <div className='col-span-2'>
                                             <div className='space-y-8'>
                                                 <p>{order.quantity}</p>
-                                                <p>{getPaymentName(order.payment)}</p>
-                                                <p>{getPayName(order.pay)}</p>
+                                                <p>{getPaymentName(order.payment) === '' ? 'None' : getPaymentName(order.payment)}</p>
+                                                <p>{getPayName(order.pay) === '' ? 'None' : getPayName(order.pay)}</p>
                                                 <p>${order.total.toFixed(2)}</p>
                                                 <p>{getStatusName(order.status)}</p>
                                                 <p>{formatDate(order.date)}</p>
