@@ -6,11 +6,14 @@ import 'swiper/css';
 import { Autoplay } from 'swiper/modules';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
 
 import RelatedProducts from '../RelatedProducts/RelatedProducts';
 import { ShopContext } from '../../Context/ShopContext';
 
 const ProductDisplay = (props) => {
+    const { t, i18n } = useTranslation()
+
     const { product } = props;
     const [currentCategory, setCurrentCategory] = useState('');
     const [slidesPerView, setSlidesPerView] = useState(2);
@@ -104,7 +107,7 @@ const ProductDisplay = (props) => {
     const handleAddToCart = () => {
         if (!localStorage.getItem('auth-token')) {
             // Sử dụng react-toastify để hiển thị thông báo
-            toast.error("Bạn cần đăng nhập trước!", {
+            toast.error(t('log in first'), {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -119,7 +122,7 @@ const ProductDisplay = (props) => {
         }
 
         if (!selectedSize) {
-            toast.error("Vui lòng chọn size!", {
+            toast.error(t('need select size'), {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -137,7 +140,7 @@ const ProductDisplay = (props) => {
 
         if (selectedSizeObj && selectedSizeObj.quantity === 0) {
             // Hiển thị thông báo khi size đã hết hàng
-            toast.error("Size này đã hết hàng", {
+            toast.error(t('out of stock size'), {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -152,7 +155,7 @@ const ProductDisplay = (props) => {
         }
 
         // Nếu có token và đã chọn kích thước, thực hiện thêm vào giỏ hàng
-        toast.success("Thêm vào giỏ hàng thành công", {
+        toast.success(t('add to cart successfully'), {
             position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
@@ -170,7 +173,7 @@ const ProductDisplay = (props) => {
     const handleAddToWishlist = () => {
         if (!localStorage.getItem('auth-token')) {
             // Hiển thị thông báo yêu cầu đăng nhập
-            toast.error("Bạn cần đăng nhập trước!", {
+            toast.error(t('log in first'), {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -194,7 +197,7 @@ const ProductDisplay = (props) => {
             delete updatedWishlistItems[product.id];
             setWishlistItems(updatedWishlistItems);
     
-            toast.success("Đã xóa khỏi danh sách yêu thích", {
+            toast.success(t('removed from wishlist'), {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -215,7 +218,7 @@ const ProductDisplay = (props) => {
             updatedWishlistItems[product.id] = 1;
             setWishlistItems(updatedWishlistItems);
     
-            toast.success("Đã thêm vào danh sách yêu thích", {
+            toast.success(t('added to wishlist'), {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -271,9 +274,9 @@ const ProductDisplay = (props) => {
                                 )}
                             </div>
                             <p className="text-xl mt-1">${formattedPrice}</p>
-                            <p className="mt-1">Category: {getCategoryName(product.category)}</p>
+                            <p className="mt-1">{t('category')}: {t(getCategoryName(product.category))}</p>
                             <div className="mt-10">
-                                <p className="mb-4">Select Size</p>
+                                <p className="mb-4">{t('select size')}</p>
                                 <div className="flex flex-wrap gap-4">
                                     {product.sizes.map((item, index) => (
                                         <div key={index} className=''>
@@ -295,7 +298,15 @@ const ProductDisplay = (props) => {
                                     {product.sizes.map((item, index) => (
                                         <div key={index} className=''>
                                             {sizeActive === getSizeName(item.size) && <div className='flex justify-center mt-4'>
-                                                {item.quantity > 0 ? <p className='text-green-700'>YAY! It's in stock | only {item.quantity} left</p> : <p className='text-red-700'>OOPS! It's out of stock</p>}
+                                                {item.quantity > 0 ? 
+                                                    <p className='text-green-700'>
+                                                        {i18n.language === 'en' ? 
+                                                            `${t('yay in stock')} | ${t('only')} ${item.quantity} ${t('left')}` 
+                                                            : 
+                                                            `${t('yay in stock')} | ${t('only')} ${t('left')} ${item.quantity}`
+                                                        }
+                                                    </p> : 
+                                                    <p className='text-red-700'>{t('oops out of stock')}</p>}
                                             </div>}
                                         </div>
                                     ))}
@@ -303,7 +314,7 @@ const ProductDisplay = (props) => {
                             </div>
                             <div className="mt-8">
                                 <button onClick={handleAddToCart} className="btn-primary uppercase w-full">
-                                    Add to Cart
+                                    {t('add to cart')}
                                 </button>
                             </div>
                         </div>

@@ -2,10 +2,14 @@ import { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import axios from "axios";
-import { ShopContext } from "../../Context/ShopContext";
 import Swal from 'sweetalert2'
+import { useTranslation } from "react-i18next";
+
+import { ShopContext } from "../../Context/ShopContext";
 
 const ChangePassword = () => {
+    const { t, i18n } = useTranslation();
+
     const { userId } = useContext(ShopContext);
     const [user, setUser] = useState({
         currentPassword: '',
@@ -13,11 +17,9 @@ const ChangePassword = () => {
         confirmPassword: ''
     });
 
-    const [error, setError] = useState('');
-
     useEffect(() => {
-        window.document.title = 'Change password'
-    }, [])
+        window.document.title = t('change password')
+    }, [i18n.language])
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -29,8 +31,8 @@ const ChangePassword = () => {
         if (!user.currentPassword || !user.newPassword || !user.confirmPassword) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Vui lòng nhập đầy đủ thông tin',
+                title: t('title swal'),
+                text: t('please enter complete information'),
                 position: 'center',
             })
             return;
@@ -39,8 +41,8 @@ const ChangePassword = () => {
         if (user.newPassword.length < 6) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Mật khẩu nhập vào phải tối thiểu 6 ký tự',
+                title: t('title swal'),
+                text: t('the entered password must be at least 6 characters'),
                 position: 'center',
             })
             return;
@@ -49,8 +51,8 @@ const ChangePassword = () => {
         if (user.newPassword !== user.confirmPassword) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Mật khẩu mới phải trùng với Xác nhận mật khẩu',
+                title: t('title swal'),
+                text: t('the new password must match the confirm password'),
                 position: 'center',
             })
             return;
@@ -64,7 +66,6 @@ const ChangePassword = () => {
             });
     
             if (!response.data.success) {
-                setError('Current password is incorrect');
                 return;
             }
     
@@ -72,8 +73,8 @@ const ChangePassword = () => {
             await axios.put(`http://localhost:5000/updateuser/${userId}`, { password: user.newPassword });
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Thay đổi mật khẩu thành công',
+                title: t('title swal'),
+                text: t('password changed successfully'),
                 position: 'center',
             }).then(() => {
                 window.location.pathname = '/';
@@ -82,8 +83,8 @@ const ChangePassword = () => {
             console.error('Error updating user:', error);
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Mật khẩu hiện tại không đúng',
+                title: t('title swal'),
+                text: t('current password is incorrect'),
                 position: 'center',
             })
         }
@@ -120,12 +121,12 @@ const ChangePassword = () => {
                 <div className="flex justify-center items-center mt-20">
                     <div className="space-y-8">
                         <div className="space-y-3">
-                            <h2 className="text-3xl font-semibold font-marcellus text-center">Change Password</h2>
+                            <h2 className="text-3xl font-semibold font-marcellus text-center">{t('change password')}</h2>
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <p>Current password <span className="text-red-600">*</span></p>
+                                    <p>{t('current password')} <span className="text-red-600">*</span></p>
                                     <div className="relative">
                                         <input
                                             type={showCurrentPassword ? 'text' : 'password'}
@@ -140,7 +141,7 @@ const ChangePassword = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <p>New password <span className="text-red-600">*</span></p>
+                                    <p>{t('new password')} <span className="text-red-600">*</span></p>
                                     <div className="relative">
                                         <input
                                             type={showNewPassword ? 'text' : 'password'}
@@ -155,7 +156,7 @@ const ChangePassword = () => {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <p>Confirm new password <span className="text-red-600">*</span></p>
+                                    <p>{t('confirm new password')} <span className="text-red-600">*</span></p>
                                     <div className="relative">
                                         <input
                                             type={showConfirmPassword ? 'text' : 'password'}
@@ -171,9 +172,9 @@ const ChangePassword = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col space-y-4 mt-6">
-                                <button type="submit" className="btn-primary text-white bg-primary hover:bg-primary/80">Change Password</button>
+                                <button type="submit" className="btn-primary text-white bg-primary hover:bg-primary/80">{t('change')}</button>
                                 <Link to={'/myprofile'}>
-                                    <button className="btn-primary hover:underline hover:bg-white hover:text-primary w-full">Cancel</button>
+                                    <button className="btn-primary hover:underline hover:bg-white hover:text-primary w-full">{t('cancel')}</button>
                                 </Link>
                             </div>
                         </form>

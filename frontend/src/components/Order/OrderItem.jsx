@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next";
 
 const OrderItem = ({ product, quantity, size }) => {
+    const { t } = useTranslation()
+
     const [allSizes, setAllSizes] = useState([]);
 
     const fetchAllSizes = async () => {
@@ -31,8 +34,8 @@ const OrderItem = ({ product, quantity, size }) => {
             <div className="space-y-1">
                 <p className="max-w-[500px] truncate">{product.name}</p>
                 <div>
-                    <p className="text-sm font-light">Size: {getSizeName(size)}</p>
-                    <p className="text-sm font-light">Quantity: {quantity}</p>
+                    <p className="text-sm font-light">{t('size')}: {getSizeName(size)}</p>
+                    <p className="text-sm font-light">{t('quantity')}: {quantity}</p>
                 </div>
             </div>
             <p className="ml-auto">${product.price.toFixed(2)}</p>

@@ -4,11 +4,13 @@ import axios from 'axios';
 import { Tooltip } from 'react-tooltip';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
 
-import { CiSearch, CiUser, CiHeart, CiShoppingCart, CiCircleRemove } from 'react-icons/ci';
+import { CiSearch, CiUser, CiHeart, CiShoppingCart, CiCircleRemove, CiGlobe } from 'react-icons/ci';
 import { HiMenuAlt1 } from 'react-icons/hi';
 import { PiGearLight, PiUserCircleLight } from "react-icons/pi";
 import { LiaUserSecretSolid } from "react-icons/lia";
+import { HiOutlineLanguage } from "react-icons/hi2";
 
 import NavLogo from '../Assets/logo.png';
 
@@ -16,8 +18,11 @@ import ResponsiveMenu from './ResponsiveMenu';
 import { ShopContext } from '../../Context/ShopContext';
 import Avatar from '../../components/Assets/default-avatar.jpg'
 import SearchResults from './SearchResults';
+import VNFlag from '../../components/Assets/vietnam-flag.png'
+import EngFlag from '../../components/Assets/english-flag.png'
 
 const Navbar = () => {
+    const { t, i18n } = useTranslation();
     const [showMenu, setShowMenu] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
@@ -104,6 +109,19 @@ const Navbar = () => {
         fetchAllCategories();
     }, [])
 
+    
+    const [showLanguages, setShowLanguages] = useState(false)
+
+    const toggleShowLanguages = () => {
+        setShowLanguages(!showLanguages)
+    }
+
+    const handleLanguageChange = (lng) => {
+        console.log(`Changing language to: ${lng}`);
+        i18n.changeLanguage(lng);
+        setShowLanguages(false)
+    }
+
     return (
         <>
             <div className="fixed top-0 left-0 right-0 bg-white z-[9999]">
@@ -118,7 +136,7 @@ const Navbar = () => {
                                         activeclass="active"
                                         className="hover:border-b-2 hover:border-black font-semibold text-primary uppercase"
                                     >
-                                        Home
+                                        {t('home')}
                                     </NavLink>
                                 </li>
                                 {allCategories.map((cat) => (
@@ -128,7 +146,7 @@ const Navbar = () => {
                                             activeclass="active"
                                             className="hover:border-b-2 hover:border-black font-semibold text-primary uppercase"
                                         >
-                                            {cat.name}
+                                            {t(cat.name)}
                                         </NavLink>
                                     </li>
                                 ))}
@@ -151,7 +169,7 @@ const Navbar = () => {
                         <div className="flex gap-5">
                             <div>
                                 <CiSearch className="text-2xl cursor-pointer" onClick={toggleSearch} id="search" />
-                                <Tooltip anchorId="search" place="bottom" content="Search" />
+                                <Tooltip anchorId="search" place="bottom" content={t('search')} />
                             </div>
                             <div className="hidden lg:block">
                                 {
@@ -163,7 +181,7 @@ const Navbar = () => {
                                         {/* dropdown */}
                                         {showProfile && <div className='fixed top-16 right-10 bg-white min-w-[280px] shadow-md p-4'>
                                             <div className='flex justify-between items-center mb-4'>
-                                                <h3 className='font-semibold'>User Profile</h3>
+                                                <h3 className='font-semibold'>{t('User profile')}</h3>
                                                 <div className='w-8 h-8 flex items-center justify-center rounded-full hover:bg-third duration-300 cursor-pointer'>
                                                     <CiCircleRemove size={24} onClick={() => setShowProfile(false)} />
                                                 </div>
@@ -180,10 +198,10 @@ const Navbar = () => {
                                             <hr className='my-4' />
                                             <div className='flex flex-col gap-2'>
                                                 <Link to={'/myprofile'} onClick={() => setShowProfile(false)}>
-                                                    <p className='flex gap-2 items-center hover:bg-third duration-300 p-2 rounded-md cursor-pointer'><PiUserCircleLight size={20} /> My Profile</p>
+                                                    <p className='flex gap-2 items-center hover:bg-third duration-300 p-2 rounded-md cursor-pointer'><PiUserCircleLight size={20} /> {t('My profile')}</p>
                                                 </Link>
                                                 <Link to={'/myorders'} onClick={() => setShowProfile(false)}>
-                                                    <p className='flex gap-2 items-center hover:bg-third duration-300 p-2 rounded-md cursor-pointer'><LiaUserSecretSolid size={20} /> My Order</p>
+                                                    <p className='flex gap-2 items-center hover:bg-third duration-300 p-2 rounded-md cursor-pointer'><LiaUserSecretSolid size={20} /> {t('My order')}</p>
                                                 </Link>
                                             </div>
                                             <hr className='my-4' />
@@ -195,7 +213,7 @@ const Navbar = () => {
                                                 }} 
                                                 className='btn-primary w-full'
                                             >
-                                                Logout
+                                                {t('Logout')}
                                             </button>
                                         </div>}
                                     </> 
@@ -212,7 +230,7 @@ const Navbar = () => {
                                 <Link to={`${localStorage.getItem('auth-token') ? '/wishlist' : '#'}`}>
                                     <CiHeart className="text-2xl cursor-pointer" id="wishlist" />
                                 </Link>
-                                <Tooltip anchorId="wishlist" place="bottom" content="Wishlist" />
+                                <Tooltip anchorId="wishlist" place="bottom" content={t('wishlist')} />
                                 {localStorage.getItem('auth-token') && 
                                     <>
                                         {getTotalWishItems() > 0 && <div className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 text-center text-xs text-white rounded-full">
@@ -225,7 +243,7 @@ const Navbar = () => {
                                 <Link to={`${localStorage.getItem('auth-token') ? '/cart' : '#'}`}>
                                     <CiShoppingCart className="text-2xl cursor-pointer" id="cart" />
                                 </Link>
-                                <Tooltip anchorId="cart" place="bottom" content="Cart" />
+                                <Tooltip anchorId="cart" place="bottom" content={t('cart')} />
                                 {localStorage.getItem('auth-token') && 
                                     <>
                                         {getTotalCartItems() > 0 && <div className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 text-center text-xs text-white rounded-full">
@@ -233,6 +251,19 @@ const Navbar = () => {
                                         </div>}
                                     </>
                                 }
+                            </div>
+                            <div className="relative cursor-pointer">
+                                <div onClick={toggleShowLanguages}>
+                                    <CiGlobe className='text-2xl cursor-pointer' />
+                                </div>
+                                {showLanguages && <div className='absolute top-[34px] right-[4px] rounded-sm bg-white shadow-lg min-w-[130px]'>
+                                    <p onClick={() => handleLanguageChange('vi')} className={`flex items-center px-3 py-2 gap-2 hover:bg-primary/10 rounded-sm select-none ${i18n.language === 'vi' ? 'bg-primary/10 hover:bg-white' : ''}`}>
+                                        <img src={VNFlag} alt="" className='w-4 object-cover' /> {t('vietnam flag')}
+                                    </p>
+                                    <p onClick={() => handleLanguageChange('en')} className={`flex items-center px-3 py-2 gap-2 hover:bg-primary/10 rounded-sm select-none ${i18n.language === 'en' ? 'bg-primary/10 hover:bg-white' : ''}`}>
+                                        <img src={EngFlag} alt="" className='w-4 object-cover' /> {t('english flag')}
+                                    </p>
+                                </div>}
                             </div>
                         </div>
                     </div>
@@ -253,7 +284,7 @@ const Navbar = () => {
                         type="text"
                         name="search"
                         id="search"
-                        placeholder="What are you looking for?"
+                        placeholder={`${t('search')}...`}
                         className="lg:w-[800px] md:w-[600px] w-[400px] border-[1px] rounded-full shadow-md outline-none p-3 pl-6"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}

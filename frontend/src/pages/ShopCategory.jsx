@@ -1,14 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
-import { ShopContext } from '../Context/ShopContext';
+import { useTranslation } from 'react-i18next';
 
+import { ShopContext } from '../Context/ShopContext';
 import Item from '../components/Item/Item';
 
 const ShopCategory = (props) => {
+    const { t, i18n } = useTranslation()
+
     const { all_product } = useContext(ShopContext);
     const [visibleProducts, setVisibleProducts] = useState(10);
 
     useEffect(() => {
-        window.document.title = `${props.title} Clothing`
+        window.document.title = i18n.language === 'en' ? `${t(props.title)} ${t('clothing')}` : `${t('clothing')} ${t(props.title)}`
     }, [props.categoryId])
 
     useEffect(() => {
@@ -33,7 +36,7 @@ const ShopCategory = (props) => {
                 <div className="container">
                     <div className="py-10">
                         <h1 className="capitalize font-marcellus font-bold lg:text-6xl sm:text-5xl text-4xl text-center">
-                            {props.title} Clothing
+                            {i18n.language === 'en' ? `${t(props.title)} ${t('clothing')}` : `${t('clothing')} ${t(props.title)}`}
                         </h1>
                     </div>
                     <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-4">
@@ -54,7 +57,7 @@ const ShopCategory = (props) => {
                     {visibleProducts < filteredProducts.length && (
                         <div className="pt-12 text-center">
                             <button className="btn-primary" onClick={loadMoreProducts}>
-                                Show More
+                                {t('show')}
                             </button>
                         </div>
                     )}

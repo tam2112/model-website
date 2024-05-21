@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import BannerImg from '../Assets/banner/banner1.png';
 
 const Banner = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <div className='overflow-hidden'>
@@ -19,12 +23,12 @@ const Banner = () => {
 
                             {/* text content */}
                             <div className="sm:max-w-[300px] lg:max-w-[500px] space-y-6 px-4 sm:px-0 text-center sm:text-left">
-                                <h1 className="text-3xl lg:text-5xl sm:text-4xl font-marcellus">About Clothes & TM</h1>
+                                <h1 className="text-3xl sm:text-4xl font-marcellus">{t('about')}</h1>
                                 <p className="line-clamp-3 text-center sm:text-left">
                                     Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni repellat quae sunt
                                     accusamus itaque dicta temporibus non. Sapiente, tenetur veniam.
                                 </p>
-                                <div><Link to={'/kids'} className="btn-primary">Shop Now</Link></div>
+                                <div><Link to={'/kids'} className="btn-primary">{t('shop')}</Link></div>
                             </div>
                         </div>
                     </div>

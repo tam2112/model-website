@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 import { TfiReload } from "react-icons/tfi";
 import { LiaShippingFastSolid } from "react-icons/lia";
@@ -9,10 +11,16 @@ import { ShopContext } from "../../Context/ShopContext";
 import OrderItem from "./OrderItem";
 
 const MyOrders = () => {
+    const { t, i18n } = useTranslation()
+
     const [allOrders, setAllOrders] = useState([]);
     const [allStatus, setAllStatus] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const { userId } = useContext(ShopContext);
+
+    useEffect(() => {
+        window.document.title = t('my orders')
+    }, [i18n.language])
 
     const fetchAllOrders = async () => {
         await fetch('http://localhost:5000/allorders')
@@ -58,6 +66,12 @@ const MyOrders = () => {
             },
             body: JSON.stringify({ status: cancelledStatus._id })
         });
+        Swal.fire({
+            icon: 'success',
+            title: t('title swal'),
+            text: t('cancel order success'),
+            position: 'center',
+        });
         await fetchAllOrders();
     };
 
@@ -96,7 +110,7 @@ const MyOrders = () => {
                 <div className="container">
                     <div>
                         <div className="mt-16 space-y-8">
-                            <h1 className="font-semibold font-marcellus text-4xl">My Orders</h1>
+                            <h1 className="font-semibold font-marcellus text-4xl">{t('my orders')}</h1>
                             <div>
                                 <div className="space-y-8">
                                     {filterOrders.map(order => (
@@ -126,9 +140,9 @@ const MyOrders = () => {
                                                         {order.deliveryData.map((item, index) => (
                                                             <div key={index} className="space-y-2">
                                                                 <p className="font-semibold">{item.name}</p>
-                                                                <p>Address: {item.address}</p>
-                                                                <p>City: {item.city}</p>
-                                                                <p>Phone: {item.phone}</p>
+                                                                <p>{t('address')}: {item.address}</p>
+                                                                <p>{t('city')}: {item.city}</p>
+                                                                <p>{t('phone')}: {item.phone}</p>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -137,20 +151,20 @@ const MyOrders = () => {
                                                     <p>${order.total.toFixed(2)}</p>
                                                 </div>
                                                 <div className="grid place-items-center">
-                                                    <p>Items: {order.quantity}</p>
+                                                    <p>{t('items')}: {order.quantity}</p>
                                                 </div>
                                                 <div className="grid place-items-center">
                                                     {
                                                         getStatusName(order.status) === 'Processing' ? 
-                                                            (<p className="flex items-center gap-2"><TfiReload /> {getStatusName(order.status)}</p>) 
+                                                            (<p className="flex items-center gap-2"><TfiReload /> {t(getStatusName(order.status))}</p>) 
                                                         : 
                                                             getStatusName(order.status) === 'Out for Delivery' ? 
-                                                            (<p className="flex items-center gap-2"><LiaShippingFastSolid /> {getStatusName(order.status)}</p>) 
-                                                        : (<p className="flex items-center gap-2"><ImUserCheck /> {getStatusName(order.status)}</p>)
+                                                            (<p className="flex items-center gap-2"><LiaShippingFastSolid /> {t(getStatusName(order.status))}</p>) 
+                                                        : (<p className="flex items-center gap-2"><ImUserCheck /> {t(getStatusName(order.status))}</p>)
                                                     }
                                                 </div>
                                                 <div className="grid place-items-center">
-                                                    <button className="bg-red-300 hover:bg-red-400 transition-all duration-300 px-6 py-3 rounded-md text-white" onClick={() => openConfirmation(order._id)}>Track Order</button>
+                                                    <button className="bg-red-300 hover:bg-red-400 transition-all duration-300 px-6 py-3 rounded-md text-white" onClick={() => openConfirmation(order._id)}>{t('track order')}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,10 +179,10 @@ const MyOrders = () => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
-                        <p className="sm:text-lg text-sm">Are you sure you want to cancel this order?</p>
+                        <p className="sm:text-lg text-sm">{t('are you sure you want to cancel this order')}?</p>
                         <div className="flex justify-end mt-4">
-                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmCancel}>Yes</button>
-                            <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>No</button>
+                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmCancel}>{t('yes')}</button>
+                            <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>{t('no')}</button>
                         </div>
                     </div>
                 </div>

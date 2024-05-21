@@ -4,10 +4,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 
+import { useTranslation } from 'react-i18next';
+
 import upcoming_product from '../Assets/upcoming_product';
 import Item from '../Item/Item';
 
 const UpcomingProd = () => {
+    const { t } = useTranslation()
+
     return (
         <>
             <div className="py-10 overflow-hidden">
@@ -20,7 +24,7 @@ const UpcomingProd = () => {
                             ratione amet consectetur adipisicin
                         </p>
                         <h1 className="lg:max-w-[700px] lg:text-6xl sm:text-4xl text-3xl font-bold font-marcellus text-primary" data-aos='fade-left' data-aos-delay='500'>
-                            Upcoming Product Reusable Clothes
+                            {t('upcoming')}
                         </h1>
                     </div>
 

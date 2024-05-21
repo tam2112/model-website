@@ -1,9 +1,13 @@
 import { useContext, useEffect, useState } from "react"
+import Swal from "sweetalert2"
+import { useTranslation } from "react-i18next"
+
 import { ShopContext } from "../../Context/ShopContext"
 import OrderItem from "./OrderItem"
-import { useNavigate } from "react-router-dom"
 
 const OrderPayment = () => {
+    const { t, i18n } = useTranslation();
+
     const { selectedProducts, all_product, getTotalCartAmount, addOrder, userId, userInfo } = useContext(ShopContext)
 
     const [allPayments, setAllPayments] = useState([])
@@ -30,8 +34,8 @@ const OrderPayment = () => {
     }
 
     useEffect(() => {
-        window.document.title = 'Order Payment'
-    }, [])
+        window.document.title = t('order payment')
+    }, [i18n.language])
 
     useEffect(() => {
         fetchAllPayments();
@@ -90,7 +94,14 @@ const OrderPayment = () => {
             // Thực hiện đặt hàng
             await addOrder(userId, userInfo, selectedProducts, selectedPayment, selectedPay, getTotalCartAmount(), Object.keys(selectedProducts).length);
 
-            window.location.href = '/myorders';
+            Swal.fire({
+                icon: 'success',
+                title: t('title swal'),
+                text: t('pay success'),
+                position: 'center',
+            }).then(() => {
+                window.location.href = '/myorders';
+            })
         } catch (error) {
             console.error('Error placing order:', error);
         }
@@ -103,7 +114,7 @@ const OrderPayment = () => {
                 <div className="container">
                     <div className="my-8 grid grid-cols-2 gap-8">
                         <div className="bg-[#f8f8f8] rounded-md py-4 min-h-[500px]">
-                            <h2 className="font-marcellus text-3xl font-bold text-center">Total: <span className="font-sans font-normal text-2xl">${getTotalCartAmount()}</span></h2>
+                            <h2 className="font-marcellus text-3xl font-bold text-center">{t('total price')}: <span className="font-sans font-normal text-2xl">${getTotalCartAmount()}</span></h2>
                             
                             <div className="">
                                 {Object.keys(selectedProducts).map((productId) => {
@@ -121,16 +132,16 @@ const OrderPayment = () => {
                             </div>
                         </div>
                         <div className="bg-[#f8f8f8] rounded-md py-4">
-                            <h2 className="font-marcellus text-3xl font-bold text-center">Payment</h2>
+                            <h2 className="font-marcellus text-3xl font-bold text-center">{t('payment')}</h2>
 
                             {/* Payment */}
                             <div className="px-4">
                                 <div className="mt-8 space-y-6">
                                     <div className="space-y-2">
                                         <select value={selectedPayment} onChange={handlePaymentChange} name="payment" className="border-[1px] border-primary py-1 px-2 w-[100%]">
-                                            <option value="">--- Select Payment ---</option>
+                                            <option value="">--- {t('select payment')} ---</option>
                                             {allPayments.map(payment => (
-                                                <option key={payment._id} value={payment._id}>{payment.name}</option>
+                                                <option key={payment._id} value={payment._id}>{t(payment.name)}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -156,18 +167,18 @@ const OrderPayment = () => {
 
                                     {/* Information pay */}
                                     {selectedPayment !== '' && getPaymentName(selectedPayment) === 'credit' && <div className="space-y-4">
-                                        <h2 className="text-xl font-semibold">Credit information</h2>
+                                        <h2 className="text-xl font-semibold">{t('credit info')}</h2>
                                         <div className="space-y-6">
                                             <div className="space-y-2">
-                                                <p>Card number</p>
+                                                <p>{t('card number')}</p>
                                                 <input type="text" value={cardNumber} onChange={handleInputChange} className="border-[1px] border-primary px-3 py-1 w-full" placeholder="1111 1111 1111 1111" />
                                             </div>
                                             <div className="space-y-2">
-                                                <p>Cardholder name</p>
+                                                <p>{t('cardholder name')}</p>
                                                 <input type="text" className="border-[1px] border-primary px-3 py-1 w-full" placeholder="Full name on card" />
                                             </div>
                                             <div className="space-y-2">
-                                                <p>Country or region</p>
+                                                <p>{t('country or region')}</p>
                                                 <input type="text" className="border-[1px] border-primary px-3 py-1 w-full" placeholder="Ex: Viet Nam" />
                                             </div>
                                         </div>
@@ -175,7 +186,7 @@ const OrderPayment = () => {
 
                                     {/* Button */}
                                     {selectedPayment !== '' && <div>
-                                        <button onClick={handlePay} className="btn-primary mt-4 w-full bg-primary text-white hover:bg-primary/85">PAY</button>
+                                        <button onClick={handlePay} className="btn-primary mt-4 w-full bg-primary text-white hover:bg-primary/85 uppercase">{t('pay')}</button>
                                     </div>}
                                 </div>
                             </div>

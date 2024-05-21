@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next'
 
 import AvatarDefault from '../Assets/default-avatar.jpg';
 import { ShopContext } from '../../Context/ShopContext';
@@ -15,6 +17,8 @@ const formatDate = (dateString) => {
 };
 
 const MyProfile = () => {
+    const { t, i18n } = useTranslation()
+
     const { userId } = useContext(ShopContext);
 
     const [user, setUser] = useState({
@@ -36,9 +40,9 @@ const MyProfile = () => {
     const [isEditingAddress, setIsEditingAddress] = useState(false);
 
     useEffect(() => {
-        window.document.title = 'My profile'
+        window.document.title = t('my profile')
         window.scrollTo(0, 0)
-    }, [])
+    }, [i18n.language])
 
     useEffect(() => {
         axios.get(`http://localhost:5000/detailsuser/${userId}`)
@@ -73,6 +77,12 @@ const MyProfile = () => {
         try {
             await axios.put(`http://localhost:5000/updateuser/${userId}`, updatedUser);
             setUser(updatedUser);
+            Swal.fire({
+                icon: 'success',
+                title: t('title swal'),
+                text: t('update success'),
+                position: 'center',
+            })
         } catch (error) {
             console.error('Error updating user details:', error);
         }
@@ -142,45 +152,45 @@ const MyProfile = () => {
                             <form onSubmit={handleDetailsSubmit} className='space-y-6'>
                                 <div className='p-8 bg-white rounded-2xl space-y-10'>
                                     <div className='flex justify-between items-center'>
-                                        <h2 className='font-semibold'>My Details</h2>
+                                        <h2 className='font-semibold'>{t('my details')}</h2>
                                         {isEditingDetails ? (
                                             <div className='flex gap-2'>
-                                                <button type="submit" className='underline cursor-pointer'>Save</button>
-                                                <button type="button" onClick={() => setIsEditingDetails(false)} className='underline cursor-pointer'>Cancel</button>
+                                                <button type="submit" className='underline cursor-pointer'>{t('save')}</button>
+                                                <button type="button" onClick={() => setIsEditingDetails(false)} className='underline cursor-pointer'>{t('cancel')}</button>
                                             </div>
                                         ) : (
-                                            <p onClick={() => setIsEditingDetails(true)} className='underline cursor-pointer'>Edit</p>
+                                            <p onClick={() => setIsEditingDetails(true)} className='underline cursor-pointer'>{t('edit')}</p>
                                         )}
                                     </div>
                                     <div className='space-y-4'>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Email</p>
+                                            <p className='text-sm text-primary/60'>{t('email')}</p>
                                             <input onChange={handleInputChange} type="email" name='email' value={user.email} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingDetails} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Name</p>
+                                            <p className='text-sm text-primary/60'>{t('name user')}</p>
                                             <input onChange={handleInputChange} type="text" name='name' value={user.name} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingDetails} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Date of birth</p>
+                                            <p className='text-sm text-primary/60'>{t('date of birth')}</p>
                                             <input onChange={handleInputChange} type="date" name='birthday' value={user.birthday} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingDetails} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Phone Number</p>
+                                            <p className='text-sm text-primary/60'>{t('phone number')}</p>
                                             <input onChange={handleInputChange} type="text" name='phone' value={user.phone} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingDetails} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Gender</p>
+                                            <p className='text-sm text-primary/60'>{t('gender')}</p>
                                             <select onChange={handleInputChange} name="gender" value={user.gender} className='w-full px-2 py-1 border-b-[1px] border-primary rounded-sm disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingDetails}>
-                                                <option value="skip">Select gender</option>
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="not">Prefer not to say</option>
+                                                <option value="skip">{t('select gender')}</option>
+                                                <option value="male">{t('male')}</option>
+                                                <option value="female">{t('female')}</option>
+                                                <option value="not">{t('not')}</option>
                                             </select>
                                         </div>
                                         <div className='text-primary space-y-2'>
                                             <div>
-                                                <p className='mb-4'>Avatar</p>
+                                                <p className='mb-4'>{t('avatar')}</p>
                                                 <label htmlFor="file-input-image">
                                                     <img src={user.avatar || AvatarDefault} alt="" className='w-12 h-12 rounded-full object-cover' />
                                                 </label>
@@ -193,39 +203,39 @@ const MyProfile = () => {
                             <form onSubmit={handleAddressSubmit} className='space-y-6'>
                                 <div className='p-8 bg-white rounded-2xl space-y-10 h-full'>
                                     <div className='flex justify-between items-center'>
-                                        <h2 className='font-semibold'>Address</h2>
+                                        <h2 className='font-semibold'>{t('address')}</h2>
                                         {isEditingAddress ? (
                                             <div className='flex gap-2'>
-                                                <button type="submit" className='underline cursor-pointer'>Save</button>
-                                                <button type="button" onClick={() => setIsEditingAddress(false)} className='underline cursor-pointer'>Cancel</button>
+                                                <button type="submit" className='underline cursor-pointer'>{t('save')}</button>
+                                                <button type="button" onClick={() => setIsEditingAddress(false)} className='underline cursor-pointer'>{t('cancel')}</button>
                                             </div>
                                         ) : (
-                                            <p onClick={() => setIsEditingAddress(true)} className='underline cursor-pointer'>Edit</p>
+                                            <p onClick={() => setIsEditingAddress(true)} className='underline cursor-pointer'>{t('edit')}</p>
                                         )}
                                     </div>
                                     <div className='space-y-4'>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Address</p>
+                                            <p className='text-sm text-primary/60'>{t('address')}</p>
                                             <input onChange={handleInputChange} type="text" name='address' value={user.address} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingAddress} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>City</p>
+                                            <p className='text-sm text-primary/60'>{t('city')}</p>
                                             <input onChange={handleInputChange} type="text" name='city' value={user.city} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingAddress} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Province</p>
+                                            <p className='text-sm text-primary/60'>{t('province')}</p>
                                             <input onChange={handleInputChange} type="text" name='province' value={user.province} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingAddress} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>District</p>
+                                            <p className='text-sm text-primary/60'>{t('district')}</p>
                                             <input onChange={handleInputChange} type="text" name='district' value={user.district} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingAddress} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Commune</p>
+                                            <p className='text-sm text-primary/60'>{t('commune')}</p>
                                             <input onChange={handleInputChange} type="text" name='commune' value={user.commune} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingAddress} />
                                         </div>
                                         <div className='text-primary space-y-2'>
-                                            <p className='text-sm text-primary/60'>Country</p>
+                                            <p className='text-sm text-primary/60'>{t('country')}</p>
                                             <input onChange={handleInputChange} type="text" name='country' value={user.country} className='border-b-[1px] border-primary px-2 py-1 rounded-sm w-full disabled:cursor-not-allowed disabled:bg-white' disabled={!isEditingAddress} />
                                         </div>
                                     </div>
@@ -233,12 +243,12 @@ const MyProfile = () => {
                             </form>
                             <div className='p-8 bg-white rounded-2xl space-y-10'>
                                 <div className='flex justify-between items-center'>
-                                    <h2 className='font-semibold uppercase'>Privacy</h2>
+                                    <h2 className='font-semibold uppercase'>{t('privacy')}</h2>
                                 </div>
                                 <div className='space-y-4'>
                                     <div className='text-primary'>
                                         <Link to={'changepassword'}>
-                                            <p className='hover:underline cursor-pointer'>Change password</p>
+                                            <p className='hover:underline cursor-pointer'>{t('change password')}</p>
                                         </Link>
                                     </div>
                                 </div>

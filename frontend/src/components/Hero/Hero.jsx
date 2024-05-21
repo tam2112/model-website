@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 import HeroImg from '../Assets/hero/hero_image.png';
 import HeroImg2 from '../Assets/hero/hero_image2.png';
 
 const Hero = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="py-10 pt-24 overflow-hidden">
@@ -14,7 +18,7 @@ const Hero = () => {
                                 <img src={HeroImg} alt="" className="w-[46%] object-cover" data-aos='zoom-in' />
                             </div>
                             <h1 className="font-bold lg:text-6xl sm:text-5xl text-4xl text-primary max-w-[600px] font-marcellus" data-aos='fade-up'>
-                                Elevate Your Look With Our Clothes.
+                                {t('title')}.
                             </h1>
                         </div>
 
@@ -28,7 +32,7 @@ const Hero = () => {
                                 consequuntur rem nostrum molestiae inventore nulla libero rerum?
                             </p>
                             <div data-aos='fade-up' data-aos-offset='0'>
-                                <Link to={'/men'} className="btn-primary">Shop Now</Link>
+                                <Link to={'/men'} className="btn-primary">{t('shop')}</Link>
                             </div>
                         </div>
                     </div>

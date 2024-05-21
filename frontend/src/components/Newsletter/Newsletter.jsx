@@ -1,4 +1,8 @@
+import { useTranslation } from "react-i18next";
+
 const Newsletter = () => {
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="py-14" data-aos='zoom-in'>
@@ -7,11 +11,11 @@ const Newsletter = () => {
                         {/* Sign up to our newsletter */}
                         <div className="flex flex-col sm:justify-center items-center text-white text-center space-y-6 w-full">
                             <h3 className="font-bold text-white uppercase lg:text-3xl text-2xl">
-                                Sign up to our newsletter
+                                {t('sign up newsletter')}
                             </h3>
                             <p className="text-sm">Lorem ipsum dolor sit.</p>
                             <button className="btn-primary bg-white inline-block text-primary w-[250px] h-[60px] md:w-[220px] hover:border-2 hover:border-white hover:text-white">
-                                Subscribe
+                                {t('subscribe')}
                             </button>
                         </div>
 
@@ -21,10 +25,10 @@ const Newsletter = () => {
 
                         {/* News */}
                         <div className="flex flex-col justify-center items-center text-white text-center space-y-6 w-full">
-                            <h3 className="font-bold text-white uppercase lg:text-3xl text-2xl">News</h3>
+                            <h3 className="font-bold text-white uppercase lg:text-3xl text-2xl">{t('news')}</h3>
                             <p>Lorem ipsum dolor sit olor sit.</p>
                             <button className="btn-primary border-2 border-white w-[250px] h-[60px] md:w-[220px] hover:bg-white hover:text-primary">
-                                Subscribe
+                                {t('subscribe')}
                             </button>
                         </div>
                     </div>

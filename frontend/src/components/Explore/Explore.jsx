@@ -1,10 +1,12 @@
 import { Link, NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import Item from '../Item/Item';
-import { useEffect, useState } from 'react';
 
 const Explore = () => {
     const [explore, setExplore] = useState([])
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetch('http://localhost:5000/explore')
@@ -36,13 +38,13 @@ const Explore = () => {
                     <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
                         <div className="flex flex-col sm:justify-between">
                             <h1 className="lg:text-6xl sm:text-5xl text-4xl font-bold text-primary font-marcellus" data-aos='fade-up-right'>
-                                Explore Now With Our Best Collection
+                                {t('explore')}
                             </h1>
                             <ul className="mt-12 flex sm:flex-col sm:items-start items-center gap-14 sm:gap-8">
                                 {allCategories.map((cat) => (
                                     <li key={cat.id} data-aos='fade-right'>
                                         <NavLink to={`/${cat.name}`} className="text-2xl text-primary font-semibold capitalize">
-                                            {cat.name}
+                                            {t(cat.name)}
                                         </NavLink>
                                     </li>
                                 ))}
@@ -57,8 +59,8 @@ const Explore = () => {
                             />
                         ))}
                         <div className="lg:border-b-2 flex items-end lg:justify-end justify-center">
-                            <div><Link to={'/men'} className="hidden lg:block font-bold py-2" data-aos='fade-up'>See More</Link></div>
-                            <div><Link to={'/men'} className="lg:hidden block btn-primary w-full" data-aos='fade-up'>See More</Link></div>
+                            <div><Link to={'/men'} className="hidden lg:block font-bold py-2" data-aos='fade-up'>{t('see more')}</Link></div>
+                            <div><Link to={'/men'} className="lg:hidden block btn-primary w-full" data-aos='fade-up'>{t('see more')}</Link></div>
                         </div>
                     </div>
                 </div>

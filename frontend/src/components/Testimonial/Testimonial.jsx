@@ -2,6 +2,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+import { useTranslation } from 'react-i18next';
+
 const TestimonialData = [
     {
         id: 1,
@@ -68,6 +70,8 @@ const Testimonial = () => {
         ],
     };
 
+    const { t } = useTranslation();
+
     return (
         <>
             <div className="pt-20">
@@ -75,7 +79,7 @@ const Testimonial = () => {
                     {/* header */}
                     <div className="text-center">
                         <h1 className="lg:text-5xl sm:text-4xl text-3xl font-bold font-marcellus text-primary pb-8" data-aos='fade-up'>
-                            What Our Customers Are Saying
+                            {t('customers saying')}
                         </h1>
                     </div>
 

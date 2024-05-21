@@ -4,6 +4,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 
+import { useTranslation } from 'react-i18next';
+
 import Img1 from '../Assets/blog/blog1.png';
 import Img2 from '../Assets/blog/blog2.jpg';
 import Img3 from '../Assets/blog/blog3.jpg';
@@ -41,6 +43,8 @@ const BlogList = [
 ];
 
 const BlogComp = () => {
+    const { t } = useTranslation()
+
     return (
         <>
             <div>
@@ -48,7 +52,7 @@ const BlogComp = () => {
                     {/* header */}
                     <div>
                         <h1 className="lg:text-6xl sm:text-5xl text-4xl font-marcellus font-bold text-primary sm:pb-0 pb-4" data-aos='fade-right'>
-                            Blog
+                            {t('blog')}
                         </h1>
                     </div>
 
@@ -70,7 +74,7 @@ const BlogComp = () => {
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate hic eius
                                     provident sequi, quos deleniti praesentium quas delectus. Voluptate, suscipit.
                                 </p>
-                                <p>Read Now</p>
+                                <p>{t('read')}</p>
                             </div>
                         </div>
                         <div className="grid grid-rows-2 gap-4" data-aos='fade-up' data-aos-delay='500'>
@@ -86,7 +90,7 @@ const BlogComp = () => {
                                 {/* text content */}
                                 <div className="absolute bottom-10 space-y-6 px-10 text-white">
                                     <h1 className="text-white font-bold text-xl">The Winning Winter Trends</h1>
-                                    <p>Read Now</p>
+                                    <p>{t('read')}</p>
                                 </div>
                             </div>
                             <div className="bg-black/50 relative rounded-sm group overflow-hidden cursor-pointer">
@@ -101,7 +105,7 @@ const BlogComp = () => {
                                 {/* text content */}
                                 <div className="absolute bottom-10 space-y-6 px-10 text-white">
                                     <h1 className="text-white font-bold text-xl">Do's & Don'ts for Diva Dresses</h1>
-                                    <p>Read Now</p>
+                                    <p>{t('read')}</p>
                                 </div>
                             </div>
                         </div>
@@ -118,12 +122,12 @@ const BlogComp = () => {
                                 {/* text content */}
                                 <div className="absolute bottom-10 space-y-6 px-10 text-white">
                                     <h1 className="text-white font-bold text-xl">The Scent Of An AND Woman</h1>
-                                    <p>Read Now</p>
+                                    <p>{t('read')}</p>
                                 </div>
                             </div>
                             <div className="lg:border-b-2 grid place-items-end">
-                                <p className="hidden lg:block pb-2 font-bold cursor-pointer">See All Blogs</p>
-                                <button className="lg:hidden block w-full btn-primary">See More</button>
+                                <p className="hidden lg:block pb-2 font-bold cursor-pointer">{t('see all blogs')}</p>
+                                <button className="lg:hidden block w-full btn-primary">{t('see more')}</button>
                             </div>
                         </div>
                     </div>
@@ -145,7 +149,7 @@ const BlogComp = () => {
                                     <div className="absolute bottom-10 space-y-6 px-10 text-white">
                                         <h1 className="text-white font-bold text-xl">{blog.title}</h1>
                                         <p className="text-sm line-clamp-3">{blog.description}</p>
-                                        <p className="border-b-2 inline-block uppercase text-sm">Read Now</p>
+                                        <p className="border-b-2 inline-block uppercase text-sm">{t('read')}</p>
                                     </div>
                                 </div>
                             </SwiperSlide>

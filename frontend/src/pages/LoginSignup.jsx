@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import Swal from 'sweetalert2';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useTranslation } from 'react-i18next'
 
 import BannerImg from '../components/Assets/banner/sign-in.jpg';
 
 const LoginSignup = () => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('sign in title')
+    }, [i18n.language])
+
     const [state, setState] = useState("Sign Up");
     const [formData, setFormData] = useState({
         name: '',
@@ -25,7 +32,7 @@ const LoginSignup = () => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         if (name === 'password' && value.length < 6) {
-            setPasswordError('Password phải tối thiểu 6 ký tự');
+            setPasswordError(t('password must be at least 6 characters'));
         } else {
             setPasswordError('');
         }
@@ -36,7 +43,7 @@ const LoginSignup = () => {
         setInputBlur({ ...inputBlur, [name]: true });
         if (name === 'password') {
             if (value.length < 6) {
-                setPasswordError('Password phải tối thiểu 6 ký tự');
+                setPasswordError(t('password must be at least 6 characters'));
             } else {
                 setPasswordError('');
             }
@@ -59,8 +66,8 @@ const LoginSignup = () => {
         if (!formData.email || !formData.password) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Vui lòng điền đầy đủ thông tin',
+                title: t('title swal'),
+                text: t('please enter complete information'),
                 position: 'center',
             })
             return;
@@ -69,8 +76,8 @@ const LoginSignup = () => {
         if (!captchaToken) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Vui lòng xác minh CAPTCHA',
+                title: t('title swal'),
+                text: t('please verify CAPTCHA'),
                 position: 'center',
             })
             return;
@@ -94,8 +101,8 @@ const LoginSignup = () => {
         else {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: responseData.errors,
+                title: t('title swal'),
+                text: t(responseData.errors),
                 position: 'center',
             })
         }
@@ -107,8 +114,8 @@ const LoginSignup = () => {
         if (!formData.name || !formData.email || !formData.password) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Vui lòng điền đầy đủ thông tin',
+                title: t('title swal'),
+                text: t('please enter complete information'),
                 position: 'center',
             })
             return;
@@ -118,8 +125,8 @@ const LoginSignup = () => {
         if (formData.password.length < 6) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Mật khẩu nhập vào tối thiểu 6 ký tự',
+                title: t('title swal'),
+                text: t('password must be at least 6 characters'),
                 position: 'center',
             })
             return;
@@ -128,8 +135,8 @@ const LoginSignup = () => {
         if (!captchaToken) {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Vui lòng xác minh CAPTCHA',
+                title: t('title swal'),
+                text: t('please verify CAPTCHA'),
                 position: 'center',
             })
             return;
@@ -153,8 +160,8 @@ const LoginSignup = () => {
         else {
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: responseData.errors,
+                title: t('title swal'),
+                text: t(responseData.errors),
                 position: 'center',
             })
         }
@@ -173,15 +180,15 @@ const LoginSignup = () => {
                         {/* text content */}
                         <div className="bg-white col-span-2 rounded-r-sm h-full px-10" data-aos='fade-left'>
                             <div className="flex flex-col justify-center h-full">
-                                <h1 className="font-marcellus font-bold text-center text-4xl">{state === 'Login' ? 'Welcome back!' : "Let's get started!"}</h1>
+                                <h1 className="font-marcellus font-bold text-center text-4xl">{state === 'Login' ? `${t('welcome back')}!` : `${t('get started')}!`}</h1>
                                 <p className="text-sm text-gray-400 mt-1 text-center font-semibold">
-                                    {state === 'Login' ? 'Continue to upgrade yourself by purchasing our clothes' : 'Start upgrading yourself by purchasing our clothes'}
+                                    {state === 'Login' ? t('continue to upgrade yourself by purchasing our clothes') : t('start upgrading yourself by purchasing our clothes')}
                                 </p>
                                 
                                 <div className="py-8 space-y-4">
                                     {state === 'Sign Up' ? <div className="flex flex-col">
                                         <label htmlFor="name" className="font-semibold">
-                                            Name <span className='text-red-500'>*</span>
+                                            {t('name user')} <span className='text-red-500'>*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -190,16 +197,16 @@ const LoginSignup = () => {
                                             onChange={changeHandler}
                                             onBlur={handleBlur}
                                             id="name"
-                                            placeholder="Enter your name"
+                                            placeholder={t('enter your name')}
                                             className={`border-2 py-2 px-4 rounded-md mt-2 ${inputBlur.name && !formData.name && 'border-red-500'}`}
                                         />
                                         {inputBlur.name && !formData.name && (
-                                            <p className='text-red-500 text-sm mt-1'>Tên không được để trống</p>
+                                            <p className='text-red-500 text-sm mt-1'>{t('name cannot be blank')}</p>
                                         )}
                                     </div> : <></>}
                                     <div className="flex flex-col">
                                         <label htmlFor="email" className="font-semibold">
-                                            Email <span className='text-red-500'>*</span>
+                                            {t('email')} <span className='text-red-500'>*</span>
                                         </label>
                                         <input
                                             id="email"
@@ -208,16 +215,16 @@ const LoginSignup = () => {
                                             value={formData.email}
                                             onChange={changeHandler}
                                             onBlur={handleBlur}
-                                            placeholder="Ex: hello@tm.com"
+                                            placeholder={t('example email')}
                                             className={`w-full border-2 py-2 px-4 rounded-md mt-2 ${inputBlur.email && !formData.email && 'border-red-500'}`}
                                         />
                                         {inputBlur.email && !formData.email && (
-                                            <p className='text-red-500 text-sm mt-1'>Email không được để trống</p>
+                                            <p className='text-red-500 text-sm mt-1'>{t('email cannot be blank')}</p>
                                         )}
                                     </div>
                                     <div className="flex flex-col">
                                         <label htmlFor="password" className="font-semibold">
-                                            Password <span className='text-red-500'>*</span>
+                                            {t('password')} <span className='text-red-500'>*</span>
                                         </label>
                                         <div className='relative'>
                                             <input
@@ -227,7 +234,7 @@ const LoginSignup = () => {
                                                 value={formData.password}
                                                 onChange={changeHandler}
                                                 onBlur={handleBlur}
-                                                placeholder="Enter your password"
+                                                placeholder={t('enter your password')}
                                                 className={`w-full border-2 py-2 px-4 rounded-md mt-2 ${inputBlur.password && formData.password.length < 6 && 'border-red-500'}`}
                                             />
                                             <p className='absolute top-[20px] right-5 cursor-pointer' onClick={togglePasswordVisibility}>
@@ -242,17 +249,17 @@ const LoginSignup = () => {
                                         sitekey="6Le9ouEpAAAAAFRwgXd3W4s6t8FySSGJKKMWPm0C"
                                         onChange={onCaptchaChange}
                                     />
-                                    {state === 'Login' ? <p className="text-right font-semibold cursor-pointer">Forgot Password?</p> : <></>}
+                                    {state === 'Login' ? <p className="text-right font-semibold cursor-pointer">{t('forgot password')}?</p> : <></>}
                                 </div>
                                 <button onClick={() => { state === 'Login' ? login() : signup() }} className="btn-primary bg-primary text-white border-none hover:border-none py-4 hover:bg-primary/80">
-                                    {state === 'Login' ? 'Continue' : 'Become a member'}
+                                    {state === 'Login' ? t('continue') : t('become a member')}
                                 </button>
                                 <p className={`${state === 'Login' ? 'mt-12' : 'mt-6'} text-center`}>
-                                    {state === 'Login' ? "If you haven't account?" : "Already have an account?"}{' '}
+                                    {state === 'Login' ? `${t('have not account')}?` : `${t('already have an account')}?`}{' '}
                                     {state === 'Login' ? 
-                                        <span onClick={() => setState('Sign Up')} className="font-semibold cursor-pointer">Sign up</span>
+                                        <span onClick={() => setState('Sign Up')} className="font-semibold cursor-pointer">{t('sign up')}</span>
                                     : 
-                                        <span onClick={() => setState('Login')} className="font-semibold cursor-pointer">Login</span>
+                                        <span onClick={() => setState('Login')} className="font-semibold cursor-pointer">{t('login')}</span>
                                     }
                                     
                                 </p>

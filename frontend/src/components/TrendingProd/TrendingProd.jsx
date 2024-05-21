@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
-import Item from '../Item/Item';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import Item from '../Item/Item';
 
 const TrendingProd = () => {
+    const { t } = useTranslation()
+
     const [trending, setTrending] = useState([])
 
     useEffect(() => {
@@ -21,7 +25,7 @@ const TrendingProd = () => {
                                 <div key={item.id} className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
                                     <div className="sm:space-y-12 space-y-4 max-w-[400px]" data-aos='fade-up'>
                                         <h1 className="lg:text-6xl sm:text-5xl text-4xl text-primary font-marcellus font-bold max-w-[300px]">
-                                            Trending Now
+                                            {t('trending')}
                                         </h1>
                                         <div className="space-y-4">
                                             <div className="flex justify-between items-center">
@@ -37,7 +41,7 @@ const TrendingProd = () => {
                                                 totam dignissimos.
                                             </p>
                                             <Link to={`/product/${item.id}`} className="btn-primary">
-                                                Shop Now
+                                                {t('shop')}
                                             </Link>
                                         </div>
                                     </div>

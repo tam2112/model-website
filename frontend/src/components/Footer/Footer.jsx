@@ -1,33 +1,35 @@
 import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa';
-
-import FooterLogo from '../Assets/logo.png';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const FooterLinks = [
-    {
-        id: 1,
-        name: 'Customers',
-        links: [
-            { id: 1, name: 'Promotions', link: '/' },
-            { id: 2, name: 'Delivery', link: '/' },
-            { id: 3, name: 'Payment', link: '/' },
-            { id: 4, name: 'Gift card', link: '/' },
-        ],
-    },
-    {
-        id: 2,
-        name: 'About',
-        links: [
-            { id: 1, name: 'News', link: '/' },
-            { id: 2, name: 'Public Offers', link: '/' },
-            { id: 3, name: 'User Agreement', link: '/' },
-            { id: 4, name: 'Privacy Policy', link: '/' },
-        ],
-    },
-];
+import FooterLogo from '../Assets/logo.png';
 
 const Footer = () => {
+    const { t } = useTranslation()
+    const FooterLinks = [
+        {
+            id: 1,
+            name: t('customers'),
+            links: [
+                { id: 1, name: t('promotions'), link: '/' },
+                { id: 2, name: t('delivery'), link: '/' },
+                { id: 3, name: t('payment'), link: '/' },
+                { id: 4, name: t('gift card'), link: '/' },
+            ],
+        },
+        {
+            id: 2,
+            name: t('about footer'),
+            links: [
+                { id: 1, name: t('news'), link: '/' },
+                { id: 2, name: t('public offers'), link: '/' },
+                { id: 3, name: t('user agreement'), link: '/' },
+                { id: 4, name: t('privacy policy'), link: '/' },
+            ],
+        },
+    ];
+
     const [allCategories, setAllCategories] = useState([]);
 
     const fetchAllCategories = async () => {
@@ -73,7 +75,7 @@ const Footer = () => {
                         {/* Footer links */}
                         <div className="grid grid-cols-3 gap-20 uppercase mt-0">
                             <div>
-                                <h3 className='pb-4 font-semibold uppercase'>Navigation</h3>
+                                <h3 className='pb-4 font-semibold uppercase'>{t('navigation')}</h3>
                                 <ul className='space-y-2'>
                                     {allCategories.map((cat) => (
                                         <li key={cat.id}>
@@ -81,7 +83,7 @@ const Footer = () => {
                                                 to={`/${cat.name}`}
                                                 className="text-gray-500 hover:text-primary text-sm uppercase"
                                             >
-                                                {cat.name}
+                                                {t(cat.name)}
                                             </Link>
                                         </li>
                                     ))}
@@ -90,7 +92,7 @@ const Footer = () => {
                                             to="/"
                                             className="text-gray-500 hover:text-primary text-sm uppercase"
                                         >
-                                            Blog
+                                            {t('blog')}
                                         </Link>
                                     </li>
                                 </ul>

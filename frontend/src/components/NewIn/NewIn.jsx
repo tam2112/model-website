@@ -12,10 +12,14 @@ import 'swiper/css/navigation';
 import { Pagination, Navigation } from 'swiper/modules';
 
 import { useEffect, useState } from 'react';
-import Item from '../Item/Item';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+import Item from '../Item/Item';
 
 const NewIn = () => {
+    const { t } = useTranslation()
+
     const [slidesPerView, setSlidesPerView] = useState(4);
     const [newIn, setNewIn] = useState([]);
 
@@ -56,7 +60,7 @@ const NewIn = () => {
                         {/* header */}
                         <div className="flex sm:flex-row flex-col justify-between sm:items-center space-y-4">
                             <h1 className="lg:text-6xl sm:text-5xl text-4xl font-bold font-marcellus text-primary col-span-1" data-aos='fade-up-right'>
-                                New In
+                                {t('new in')}
                             </h1>
                             <p className="lg:max-w-[500px] lg:mr-36 mr-0 max-w-[400px] line-clamp-2" data-aos='zoom-out'>
                                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum vero doloribus quidem a
@@ -107,10 +111,10 @@ const NewIn = () => {
                     <div className="hidden lg:border-b-2 border-b-0 sm:flex sm:justify-center lg:justify-end sm:items-center">
                         <div>
                             <Link to={'/womens'} className="hidden lg:block pt-20 text-right pb-2 cursor-pointer font-bold" data-aos='fade-up'>
-                                See All New Clothes
+                                {t('see all new clothes')}
                             </Link>
                         </div>
-                        <div><Link to={'/womens'} className="lg:hidden sm:block btn-primary mt-12" data-aos='fade-up'>See More</Link></div>
+                        <div><Link to={'/womens'} className="lg:hidden sm:block btn-primary mt-12" data-aos='fade-up'>{t('see more')}</Link></div>
                     </div>
                 </div>
             </div>
