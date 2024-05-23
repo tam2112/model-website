@@ -3,8 +3,15 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next'
 
 const UpdateSize = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('update size title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [size, setSize] = useState({
         type: '',
@@ -35,16 +42,16 @@ const UpdateSize = ({ showSidebar }) => {
             await axios.put(`http://localhost:5000/updatesize/${id}`, size);
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Size updated successfully!',
+                title: t('title swal'),
+                text: t('size updated successfully'),
                 position: 'center',
             }) 
         } catch (error) {
             console.error('Error updating size:', error);
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Failed to update size',
+                title: t('title swal'),
+                text: t('failed to update size'),
                 position: 'center',
             })
         }
@@ -58,21 +65,21 @@ const UpdateSize = ({ showSidebar }) => {
                         <div className="space-y-6 mt-4">
                             <form onSubmit={handleSubmit} className='space-y-6'>
                                 <div className="space-y-2">
-                                    <p>Type</p>
+                                    <p>{t('size type')}</p>
                                     <input value={size.type} onChange={handleInputChange} type="text" name="type" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 </div>
                                 <div className="space-y-2">
-                                    <p>Name</p>
+                                    <p>{t('size name')}</p>
                                     <input value={size.name} onChange={handleInputChange} type="text" name="name" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 </div>
-                                <button type="submit" className='btn-primary'>SAVE</button>
+                                <button type="submit" className='btn-primary uppercase'>{t('save')}</button>
                             </form>
                         </div>
                         <div className='absolute top-6 right-6 flex'>
                             <Link to={'/listsize'} className="btn-primary rounded-md px-4">
                                 <div className='flex items-center gap-2'>
                                     <RiArrowGoBackLine />
-                                    Back to list
+                                    {t('back to list')}
                                 </div>
                             </Link>
                         </div>

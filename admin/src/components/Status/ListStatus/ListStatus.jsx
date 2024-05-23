@@ -5,8 +5,15 @@ import { TbListDetails } from "react-icons/tb";
 import { LiaEditSolid, LiaTrashRestoreAltSolid } from "react-icons/lia";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useTranslation } from 'react-i18next'
 
 const ListStatus = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('list status title')
+    }, [i18n.language])
+
     const [allStatus, setAllStatus] = useState([]);
     const [allDeletedItems, setAllDeletedItems] = useState([]);
 
@@ -47,8 +54,8 @@ const ListStatus = ({ showSidebar }) => {
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Delete success',
+                title: t('title swal'),
+                text: t('delete success'),
                 position: 'center',
             });
         })
@@ -65,27 +72,27 @@ const ListStatus = ({ showSidebar }) => {
                     <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
                         <div>
                             <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">All Status List</h2>
+                                <h2 className="font-semibold text-2xl">{t('all status list')}</h2>
                                 <div className="flex items-center gap-6">
                                     {filterStatus.length > 0 && <Link to={'/restorestatus'} className="btn-primary rounded-md px-4">
                                         <div className="flex items-center gap-2">
                                             <LiaTrashRestoreAltSolid size={20} />
-                                            Restore
+                                            {t('restore')}
                                         </div>
                                     </Link>}
                                     <Link to={'/addstatus'} className="btn-primary rounded-md px-4">
                                         <div className="flex items-center gap-2">
                                             <BsDatabaseAdd />
-                                            Add
+                                            {t('add')}
                                         </div>
                                     </Link>
                                 </div>
                             </div>
                             <div>
                                 <div className="sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
-                                    <p className="ml-4">Name</p>
-                                    <p>Description</p>
-                                    <p className="ml-12">Functionality</p>
+                                    <p className="ml-4">{t('status name')}</p>
+                                    <p>{t('status description')}</p>
+                                    <p className="ml-12">{t('functionality')}</p>
                                 </div>
                                 <hr className="my-4 sm:block hidden" />
                                 <div>
@@ -98,19 +105,19 @@ const ListStatus = ({ showSidebar }) => {
                                                     <div className="flex flex-col gap-4">
                                                         <Link to={`/detailsstatus/${status.id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {}}>
                                                             <div className="flex items-center gap-1">
-                                                                Details
+                                                                {t('details')}
                                                                 <TbListDetails />
                                                             </div>
                                                         </Link>
                                                         <Link to={`/updatestatus/${status.id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300">
                                                             <div className="flex items-center gap-1">
-                                                                Edit
+                                                                {t('edit')}
                                                                 <LiaEditSolid />
                                                             </div>
                                                         </Link>
                                                         <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {remove_status(status.id)}}>
                                                             <div className="flex items-center gap-1">
-                                                                Delete
+                                                                {t('delete')}
                                                                 <RiDeleteBinLine />
                                                             </div>
                                                         </div>

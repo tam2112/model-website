@@ -3,8 +3,15 @@ import { LiaTrashRestoreAltSolid } from "react-icons/lia";
 import { RiDeleteBinLine, RiArrowGoBackLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useTranslation } from 'react-i18next'
 
 const RestoreStatus = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('restore status title')
+    }, [i18n.language])
+
     const [allDeletedItems, setAllDeletedItems] = useState([]);
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
@@ -35,8 +42,8 @@ const RestoreStatus = ({ showSidebar }) => {
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Restore success',
+                title: t('title swal'),
+                text: t('restore success'),
                 position: 'center',
             });
         })
@@ -60,8 +67,8 @@ const RestoreStatus = ({ showSidebar }) => {
             }).then(() => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Thông báo',
-                    text: 'Delete success',
+                    title: t('title swal'),
+                    text: t('delete success'),
                     position: 'center',
                 });
             })
@@ -85,21 +92,21 @@ const RestoreStatus = ({ showSidebar }) => {
                     <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
                         <div>
                             <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">All Status List (Deleted)</h2>
+                                <h2 className="font-semibold text-2xl">{t('all status list')} ({t('deleted')})</h2>
                                 <div className="flex items-center gap-6">
                                     <Link to={'/liststatus'} className="btn-primary rounded-md px-4">
                                         <div className='flex items-center gap-2'>
                                             <RiArrowGoBackLine />
-                                            Back to list
+                                            {t('back to list')}
                                         </div>
                                     </Link>
                                 </div>
                             </div>
                             <div>
                                 <div className="sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
-                                    <p className="ml-4">Name</p>
-                                    <p>Description</p>
-                                    <p className="ml-12">Functionality</p>
+                                    <p className="ml-4">{t('status name')}</p>
+                                    <p>{t('status description')}</p>
+                                    <p className="ml-12">{t('functionality')}</p>
                                 </div>
                                 <hr className="my-4 sm:block hidden" />
                                 <div>
@@ -112,13 +119,13 @@ const RestoreStatus = ({ showSidebar }) => {
                                                     <div className="flex flex-col gap-4">
                                                         <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {restore_status(status.data.id)}}>
                                                             <div className="flex items-center gap-1">
-                                                                Restore
+                                                                {t('restore')}
                                                                 <LiaTrashRestoreAltSolid />
                                                             </div>
                                                         </div>
                                                         <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {remove_status(status._id)}}>
                                                             <div className="flex items-center gap-1">
-                                                                Delete
+                                                                {t('delete')}
                                                                 <RiDeleteBinLine />
                                                             </div>
                                                         </div>

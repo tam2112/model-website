@@ -8,9 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 import { CiSearch, CiUser, CiHeart, CiShoppingCart, CiCircleRemove, CiGlobe } from 'react-icons/ci';
 import { HiMenuAlt1 } from 'react-icons/hi';
-import { PiGearLight, PiUserCircleLight } from "react-icons/pi";
+import {  PiUserCircleLight } from "react-icons/pi";
 import { LiaUserSecretSolid } from "react-icons/lia";
-import { HiOutlineLanguage } from "react-icons/hi2";
 
 import NavLogo from '../Assets/logo.png';
 
@@ -78,7 +77,7 @@ const Navbar = () => {
     const handleNotLoggedIn = () => {
         if (!localStorage.getItem('auth-token')) {
             // Hiển thị thông báo yêu cầu đăng nhập
-            toast.error("Bạn cần đăng nhập trước!", {
+            toast.error(t('log in first'), {
                 position: "bottom-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -222,7 +221,7 @@ const Navbar = () => {
                                         <Link to="/login">
                                             <CiUser className="text-2xl cursor-pointer" id="login" />
                                         </Link>
-                                        <Tooltip anchorId="login" place="bottom" content="Sign in" />
+                                        <Tooltip anchorId="login" place="bottom" content={t('sign in title')} />
                                     </>
                                 }
                             </div>

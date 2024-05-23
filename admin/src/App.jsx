@@ -14,7 +14,7 @@ const App = () => {
 
     return (
         <>
-            <div className='w-screen h-screen bg-third'>
+            <div className='bg-third'>
                 <Navbar showSidebar={showSidebar} toggleShow={toggleShow} />
                 <Admin showSidebar={showSidebar} />
             </div>

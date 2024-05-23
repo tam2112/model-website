@@ -11,11 +11,17 @@ const bcrypt = require('bcryptjs');
 
 app.use(express.json());
 app.use(cors());
+// app.use(express.static('public'));
 
 // Database Connection With MongoDB
 mongoose.connect('mongodb+srv://tamminh:persistence@cluster0.ja7wxjn.mongodb.net/e-commerce?retryWrites=true&w=majority&appName=Cluster0')
 
 // API Creation
+
+// app.get('/', (req, res) => {
+    
+//     res.sendfile(__dirname + '/public/index.html');
+// })
 
 app.get('/', (req, res) => {
     res.send('Express App is Running')
@@ -1803,7 +1809,6 @@ app.get('/allorders', async (req, res) => {
     console.log("All Users Fetch");
     res.send(orders);
 })
-
 
 app.listen(port, (error) => {
     if (!error) {

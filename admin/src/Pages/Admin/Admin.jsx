@@ -9,6 +9,7 @@ import { AddPay, ListPay, DetailsPay, UpdatePay, RestorePay } from '../../compon
 import { ListCustomer, DetailsCustomer } from '../../components/Customer'
 import { ListOrder, DetailsOrder } from '../../components/Order'
 import Home from '../Home/Home'
+import { Calendar, Stacked, Pyramid, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from '../../Pages';
 
 const Admin = ({ showSidebar }) => {
     return (
@@ -16,7 +17,7 @@ const Admin = ({ showSidebar }) => {
             <div>
                 <Sidebar showSidebar={showSidebar} />
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home showSidebar={showSidebar} />} />
 
                     {/* Product */}
                     <Route path="/listproduct" element={<ListProduct showSidebar={showSidebar} />} />
@@ -67,6 +68,22 @@ const Admin = ({ showSidebar }) => {
                     {/* Orders */}
                     <Route path="/listorder" element={<ListOrder showSidebar={showSidebar} />} />
                     <Route path="/detailsorder/:id" element={<DetailsOrder showSidebar={showSidebar} />} />
+
+                    {/* apps  */}
+                    <Route path="/kanban" element={<Kanban showSidebar={showSidebar} />} />
+                    <Route path="/editor" element={<Editor showSidebar={showSidebar} />} />
+                    <Route path="/calendar" element={<Calendar showSidebar={showSidebar} />} />
+                    <Route path="/color-picker" element={<ColorPicker showSidebar={showSidebar} />} />
+
+                    {/* charts  */}
+                    <Route path="/line" element={<Line showSidebar={showSidebar} />} />
+                    <Route path="/area" element={<Area showSidebar={showSidebar} />} />
+                    <Route path="/bar" element={<Bar showSidebar={showSidebar} />} />
+                    <Route path="/pie" element={<Pie showSidebar={showSidebar} />} />
+                    <Route path="/financial" element={<Financial showSidebar={showSidebar} />} />
+                    <Route path="/color-mapping" element={<ColorMapping showSidebar={showSidebar} />} />
+                    <Route path="/pyramid" element={<Pyramid showSidebar={showSidebar} />} />
+                    <Route path="/stacked" element={<Stacked showSidebar={showSidebar} />} />
                 </Routes>
             </div>
         </>

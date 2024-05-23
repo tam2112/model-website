@@ -80,7 +80,7 @@ const AddCategory = ({ showSidebar }) => {
     
     return (
         <>
-            <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
+            <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4 h-screen`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
                     <div className={`bg-white ${showSidebar ? 'w-[70%]' : 'w-[60%]'} transition-all duration-1000 h-[480px] rounded-md py-4 px-8 overflow-y-auto relative`}>
                         <div className="space-y-6 mt-4">

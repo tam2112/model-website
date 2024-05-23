@@ -2,8 +2,16 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RiArrowGoBackLine } from "react-icons/ri";
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react';
 
 const AddPayment = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('add payment title')
+    }, [i18n.language])
+
     const [paymentDetails, setPaymentDetails] = useState({
         name: '',
         description: '',
@@ -75,7 +83,7 @@ const AddPayment = ({ showSidebar }) => {
     
     return (
         <>
-            <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
+            <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4 h-screen`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
                     <div className={`bg-white ${showSidebar ? 'w-[70%]' : 'w-[60%]'} transition-all duration-1000 h-[480px] rounded-md py-4 px-8 overflow-y-auto relative`}>
                         <div className="space-y-6 mt-4">
