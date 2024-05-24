@@ -66,7 +66,7 @@ const AddStatus = ({ showSidebar }) => {
                 Swal.fire({
                     icon: 'error',
                     title: t('title swal'),
-                    text: t('failed to add status'),
+                    text: data.message,
                     position: 'center',
                 })
         })

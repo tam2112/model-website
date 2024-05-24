@@ -184,7 +184,7 @@ const AddProduct = ({ showSidebar }) => {
                         Swal.fire({
                             icon: 'error',
                             title: 'Thông báo',
-                            text: 'Failed to add product',
+                            text: data.message,
                             position: 'center',
                         })
                 })

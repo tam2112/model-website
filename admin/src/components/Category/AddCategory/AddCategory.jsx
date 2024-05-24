@@ -63,7 +63,7 @@ const AddCategory = ({ showSidebar }) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Thông báo',
-                    text: 'Failed to add category',
+                    text: data.message,
                     position: 'center',
                 })
         })

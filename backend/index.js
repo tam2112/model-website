@@ -87,6 +87,16 @@ const Category = mongoose.model('Category', {
 // Creating API for adding categories
 app.post('/addcategory', async (req, res) => {
 
+    // Check if a category with the same name already exists
+    const existingCategory = await Category.findOne({ name: req.body.name });
+        
+    if (existingCategory) {
+        return res.status(400).json({
+            success: false,
+            message: 'Category with this name already exists'
+        });
+    }
+
     let categories = await Category.find({});
     let id;
     if (categories.length > 0) {
@@ -300,6 +310,16 @@ const Product = mongoose.model('Product', {
 // Creating API for adding products
 app.post('/addproduct', async (req, res) => {
     try {
+        // Check if a Product with the same name already exists
+        const existingProduct = await Product.findOne({ name: req.body.name });
+            
+        if (existingProduct) {
+            return res.status(400).json({
+                success: false,
+                message: 'Product with this name already exists'
+            });
+        }
+
         let products = await Product.find({});
         let id;
         if (products.length > 0) {
@@ -524,6 +544,16 @@ const Size = mongoose.model('Size', {
 
 // Creating API for adding size
 app.post('/addsize', async (req, res) => {
+
+    // Check if a Size with the same name already exists
+    const existingSize = await Size.findOne({ name: req.body.name });
+        
+    if (existingSize) {
+        return res.status(400).json({
+            success: false,
+            message: 'Size with this name already exists'
+        });
+    }
 
     let sizes = await Size.find({});
     let id;
@@ -1128,6 +1158,16 @@ const Status = mongoose.model('Status', {
 // Creating API for adding status
 app.post('/addstatus', async (req, res) => {
 
+    // Check if a Status with the same name already exists
+    const existingStatus = await Status.findOne({ name: req.body.name });
+        
+    if (existingStatus) {
+        return res.status(400).json({
+            success: false,
+            message: 'Status with this name already exists'
+        });
+    }
+
     let status = await Status.find({});
     let id;
     if (status.length > 0) {
@@ -1306,6 +1346,16 @@ const Payment = mongoose.model('Payment', {
 // Creating API for adding payment
 app.post('/addpayment', async (req, res) => {
 
+    // Check if a Payment with the same name already exists
+    const existingPayment = await Payment.findOne({ name: req.body.name });
+        
+    if (existingPayment) {
+        return res.status(400).json({
+            success: false,
+            message: 'Payment with this name already exists'
+        });
+    }
+
     let payments = await Payment.find({});
     let id;
     if (payments.length > 0) {
@@ -1482,6 +1532,16 @@ const Pay = mongoose.model('Pay', {
 
 // Creating API for adding pay
 app.post('/addpay', async (req, res) => {
+
+    // Check if a pay with the same name already exists
+    const existingPay = await Pay.findOne({ name: req.body.name });
+        
+    if (existingPay) {
+        return res.status(400).json({
+            success: false,
+            message: 'Pay with this name already exists'
+        });
+    }
 
     let pays = await Pay.find({});
     let id;

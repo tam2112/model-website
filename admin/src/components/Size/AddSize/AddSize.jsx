@@ -74,7 +74,7 @@ const AddSize = ({ showSidebar }) => {
                 Swal.fire({
                     icon: 'error',
                     title: t('title swal'),
-                    text: t('failed to add size'),
+                    text: data.message,
                     position: 'center',
                 })
         })
