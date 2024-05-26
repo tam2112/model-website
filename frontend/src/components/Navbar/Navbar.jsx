@@ -8,8 +8,9 @@ import { useTranslation } from 'react-i18next';
 
 import { CiSearch, CiUser, CiHeart, CiShoppingCart, CiCircleRemove, CiGlobe } from 'react-icons/ci';
 import { HiMenuAlt1 } from 'react-icons/hi';
-import {  PiUserCircleLight } from "react-icons/pi";
+import { PiUserCircleLight } from "react-icons/pi";
 import { LiaUserSecretSolid } from "react-icons/lia";
+import { BiPurchaseTagAlt } from "react-icons/bi";
 
 import NavLogo from '../Assets/logo.png';
 
@@ -201,6 +202,9 @@ const Navbar = () => {
                                                 </Link>
                                                 <Link to={'/myorders'} onClick={() => setShowProfile(false)}>
                                                     <p className='flex gap-2 items-center hover:bg-third duration-300 p-2 rounded-md cursor-pointer'><LiaUserSecretSolid size={20} /> {t('My order')}</p>
+                                                </Link>
+                                                <Link to={'/mypurchase'} onClick={() => setShowProfile(false)}>
+                                                    <p className='flex gap-2 items-center hover:bg-third duration-300 p-2 rounded-md cursor-pointer'><BiPurchaseTagAlt size={20} /> {t('My purchase')}</p>
                                                 </Link>
                                             </div>
                                             <hr className='my-4' />

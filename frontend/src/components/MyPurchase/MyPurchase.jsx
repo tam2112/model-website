@@ -2,25 +2,31 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 
-import { TfiReload } from "react-icons/tfi";
-import { LiaShippingFastSolid } from "react-icons/lia";
-import { ImUserCheck } from "react-icons/im";
-
 import Box from '../../components/Assets/box.png';
 import { ShopContext } from "../../Context/ShopContext";
 import OrderItem from "./OrderItem";
 
-const MyOrders = () => {
+const MyPurchase = () => {
     const { t, i18n } = useTranslation()
 
+    const [allPurchase, setAllPurchase] = useState([]);
     const [allOrders, setAllOrders] = useState([]);
-    const [allStatus, setAllStatus] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const { userId } = useContext(ShopContext);
 
     useEffect(() => {
-        window.document.title = t('my orders')
+        window.document.title = t('my purchase')
     }, [i18n.language])
+
+    const fetchAllPurchase = async () => {
+        await fetch('http://localhost:5000/allpurchase')
+        .then(res => res.json())
+        .then(data => {
+            // Sort data by date in descending order (newest to oldest)
+            data.sort((a, b) => new Date(b.date) - new Date(a.date));
+            setAllPurchase(data);
+        });
+    };
 
     const fetchAllOrders = async () => {
         await fetch('http://localhost:5000/allorders')
@@ -32,12 +38,6 @@ const MyOrders = () => {
         });
     };
 
-    const fetchAllStatus = async () => {
-        await fetch('http://localhost:5000/allstatus')
-        .then(res => res.json())
-        .then(data => setAllStatus(data));
-    };
-
     const fetchAllProducts = async () => {
         await fetch('http://localhost:5000/allproducts')
         .then(res => res.json())
@@ -45,49 +45,35 @@ const MyOrders = () => {
     };
 
     useEffect(() => {
+        fetchAllPurchase();
         fetchAllOrders();
-        fetchAllStatus();
         fetchAllProducts();
     }, []);
 
-    const cancelOrder = async (id) => {
-        // Fetch the "Cancelled" status ID
-        const cancelledStatus = allStatus.find(status => status.name === 'Cancelled');
-        if (!cancelledStatus) {
-            console.error('Cancelled status not found');
-            return;
-        }
-        
-        await fetch(`http://localhost:5000/updateorderstatus/${id}`, {
-            method: 'PUT',
+    const remove_purchase = async (id) => {
+        await fetch('http://localhost:5000/removepurchase', {
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ status: cancelledStatus._id })
-        });
-        Swal.fire({
-            icon: 'success',
-            title: t('title swal'),
-            text: t('cancel order success'),
-            position: 'center',
-        });
-        await fetchAllOrders();
-    };
-
-    const getStatusName = (statusId) => {
-        const status = allStatus.find(status => status._id === statusId);
-        return status ? status.name : '';
-    };
-
-    // Filter out orders with "Cancelled" status
-    const filterOrders = allOrders.filter(order => order.userData === userId && getStatusName(order.status) !== 'Cancelled');
+            body: JSON.stringify({ _id: id })
+        }).then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Thông báo',
+                text: 'Remove success',
+                position: 'center',
+            });
+        })
+        await fetchAllPurchase();
+    }
 
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [orderIdToCancel, setOrderIdToCancel] = useState(null);
+    const [purchaseIdToRemove, setPurchaseIdToRemove] = useState(null);
 
-    const openConfirmation = (orderId) => {
-        setOrderIdToCancel(orderId);
+    const openConfirmation = (purchaseId) => {
+        setPurchaseIdToRemove(purchaseId);
         setShowConfirmation(true);
     };
     
@@ -96,7 +82,7 @@ const MyOrders = () => {
     };
 
     const confirmCancel = async () => {
-        await cancelOrder(orderIdToCancel);
+        await remove_purchase(purchaseIdToRemove);
         closeConfirmation();
     };
     
@@ -104,18 +90,27 @@ const MyOrders = () => {
         closeConfirmation();
     };
 
+    // Filter orders based on the purchase orderData and add purchaseId to the order object
+    const filterOrders = allOrders.map(order => {
+        const purchase = allPurchase.find(purchase => purchase.orderData === order._id);
+        if (purchase) {
+            return { ...order, purchaseId: purchase._id };
+        }
+        return null;
+    }).filter(order => order !== null);
+
     return (
         <>
             <div className="py-20">
                 <div className="container">
                     <div>
                         <div className="mt-16 space-y-8">
-                            <h1 className="font-semibold font-marcellus text-4xl">{t('my orders')}</h1>
+                            <h1 className="font-semibold font-marcellus text-4xl">{t('my purchase')}</h1>
                             <div>
                                 <div className="space-y-8">
                                     {filterOrders.map(order => (
                                         <div key={order._id} className="border-primary border-2 p-4 rounded-sm">
-                                            <div className={`grid ${getStatusName(order.status) !== 'Delivered' ? 'grid-cols-[0.6fr_1.6fr_1fr_1fr_1fr_1fr]' : 'grid-cols-[0.6fr_1.6fr_1fr_1fr_1fr]'} gap-4`}>
+                                            <div className="grid grid-cols-[0.6fr_1.6fr_1fr_1fr_1fr] gap-4">
                                                 <div>
                                                     <img src={Box} alt="" className="w-14" />
                                                 </div>
@@ -154,18 +149,8 @@ const MyOrders = () => {
                                                     <p>{t('items')}: {order.quantity}</p>
                                                 </div>
                                                 <div className="grid place-items-center">
-                                                    {
-                                                        getStatusName(order.status) === 'Processing' ? 
-                                                            (<p className="flex items-center gap-2"><TfiReload /> {t(getStatusName(order.status))}</p>) 
-                                                        : 
-                                                            getStatusName(order.status) === 'Out for Delivery' ? 
-                                                            (<p className="flex items-center gap-2"><LiaShippingFastSolid /> {t(getStatusName(order.status))}</p>) 
-                                                        : (<p className="flex items-center gap-2"><ImUserCheck /> {t(getStatusName(order.status))}</p>)
-                                                    }
+                                                    <button className="bg-red-300 hover:bg-red-400 transition-all duration-300 px-6 py-3 rounded-md text-white" onClick={() => openConfirmation(order.purchaseId)}>{t('remove')}</button>
                                                 </div>
-                                                {getStatusName(order.status) !== 'Delivered' && <div className="grid place-items-center">
-                                                    <button className="bg-red-300 hover:bg-red-400 transition-all duration-300 px-6 py-3 rounded-md text-white" onClick={() => openConfirmation(order._id)}>{t('track order')}</button>
-                                                </div>}
                                             </div>
                                         </div>
                                     ))}
@@ -179,7 +164,7 @@ const MyOrders = () => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
-                        <p className="sm:text-lg text-sm">{t('are you sure you want to cancel this order')}?</p>
+                        <p className="sm:text-lg text-sm">{t('are you sure you want to remove this purchase')}?</p>
                         <div className="flex justify-end mt-4">
                             <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmCancel}>{t('yes')}</button>
                             <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>{t('no')}</button>
@@ -191,4 +176,4 @@ const MyOrders = () => {
     );
 };
 
-export default MyOrders;
+export default MyPurchase;

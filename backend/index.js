@@ -1816,6 +1816,14 @@ app.post('/addorder', async (req, res) => {
         // Lưu đơn hàng vào cơ sở dữ liệu
         await order.save();
 
+        // Tạo mục purchase mới
+        const purchase = new Purchase({
+            orderData: order._id,
+        });
+
+        // Lưu mục purchase vào cơ sở dữ liệu
+        await purchase.save();
+
         // Xóa các sản phẩm đã checkout khỏi giỏ hàng của người dùng
         for (const productId of Object.keys(req.body.products)) {
             delete user.cartData[productId];
@@ -1862,12 +1870,45 @@ app.post('/removeorder', async (req, res) => {
     }
 })
 
-
 // Creating API for get all orders
 app.get('/allorders', async (req, res) => {
     let orders = await Orders.find({});
     console.log("All Users Fetch");
     res.send(orders);
+})
+
+
+
+// Schema for Creating Purchase
+const Purchase = mongoose.model('Purchase', {
+    orderData: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Orders',
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+});
+
+// Creating API for remove purchase
+app.post('/removepurchase', async (req, res) => {
+    const itemId = req.body._id;
+
+    await Purchase.findOneAndDelete({ _id: itemId });
+
+    console.log("Removed");
+    res.json({
+        success: true
+    })
+})
+
+// Creating API for getting all purchase
+app.get('/allpurchase', async (req, res) => {
+    let purchase = await Purchase.find({});
+    console.log("All Purchase Fetch");
+    res.send(purchase);
 })
 
 app.listen(port, (error) => {

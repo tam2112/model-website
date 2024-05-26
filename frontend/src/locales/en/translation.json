@@ -158,5 +158,8 @@
     "track order": "Track order",
     "are you sure you want to cancel this order": "Are you sure you want to cancel this order",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "my purchase": "My Purchase",
+    "are you sure you want to remove this purchase": "Are you sure you want to remove this purchase",
+    "remove": "Remove"
 }

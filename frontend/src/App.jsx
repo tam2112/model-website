@@ -16,6 +16,7 @@ import MyOrders from './components/MyOrders/MyOrders'
 import Order from './components/Order/Order';
 import OrderPayment from './components/Order/OrderPayment';
 import MyProfile from './components/MyProfile/MyProfile';
+import MyPurchase from './components/MyPurchase/MyPurchase'
 import ChangePassword from './components/MyProfile/ChangePassword';
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                         <Route path='/myorders' element={<MyOrders />} />
                         <Route path='/myprofile' element={<MyProfile />} />
                         <Route path='/myprofile/changepassword' element={<ChangePassword />} />
+                        <Route path='/mypurchase' element={<MyPurchase />} />
                         <Route path="/orderpayment" element={<OrderPayment />} />
                     </Route>
                     <Route path="/" element={<Newsletter />} />

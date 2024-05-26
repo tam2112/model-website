@@ -209,7 +209,7 @@ const ListOrder = ({ showSidebar }) => {
                                                                 <TbListDetails />
                                                             </div>
                                                         </Link>
-                                                        {getStatusName(order.status) === 'Cancelled' && <div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
+                                                        {getStatusName(order.status) === 'Cancelled' || getStatusName(order.status) === 'Delivered' && <div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
                                                             <div className="flex items-center gap-1">
                                                                 Delete
                                                                 <RiDeleteBinLine />
