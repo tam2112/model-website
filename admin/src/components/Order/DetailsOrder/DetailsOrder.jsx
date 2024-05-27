@@ -2,10 +2,17 @@ import { useEffect, useState } from 'react';
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 import OrderItem from './OrderItem';
 
 const DetailsOrder = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('details order title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [order, setOrder] = useState({
         userData: '',
@@ -96,13 +103,13 @@ const DetailsOrder = ({ showSidebar }) => {
                             <div className='mt-4 space-y-16'>
                                 <div className='flex items-center justify-between'>
                                     <div className='flex gap-6'>
-                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'orderInfo' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('orderInfo')}>Order info</button>
-                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'userInfo' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('userInfo')}>User info</button>
+                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'orderInfo' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('orderInfo')}>{t('order info')}</button>
+                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'userInfo' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('userInfo')}>{t('order user info')}</button>
                                     </div>
                                     <Link to={'/listorder'} className="btn-primary rounded-md px-4">
                                         <div className='flex items-center gap-2'>
                                             <RiArrowGoBackLine />
-                                            Back to list
+                                            {t('back to list')}
                                         </div>
                                     </Link>
                                 </div>
@@ -112,7 +119,7 @@ const DetailsOrder = ({ showSidebar }) => {
                                     <div className='border-b-[1px] border-third'>
                                         <div className='grid grid-cols-3 place-items-center'>
                                             <div className='col-span-1'>
-                                                <h3 className='font-semibold mr-4'>Products</h3>
+                                                <h3 className='font-semibold mr-4'>{t('order products')}</h3>
                                             </div>
                                             <div className='col-span-2'>
                                                 {order.productData.map((item, index) => (
@@ -134,12 +141,12 @@ const DetailsOrder = ({ showSidebar }) => {
                                     </div>
                                     <div className='grid grid-cols-3 place-items-center'>
                                         <div className='space-y-8 font-semibold col-span-1'>
-                                            <h3>Quantity</h3>
-                                            <h3>Payment</h3>
-                                            <h3>Pay</h3>
-                                            <h3>Total</h3>
-                                            <h3>Status</h3>
-                                            <h3>Order date</h3>
+                                            <h3>{t('order quantity')}</h3>
+                                            <h3>{t('order payment')}</h3>
+                                            <h3>{t('order pay')}</h3>
+                                            <h3>{t('order total')}</h3>
+                                            <h3>{t('order status')}</h3>
+                                            <h3>{t('order date')}</h3>
                                         </div>
                                         <div className='col-span-2'>
                                             <div className='space-y-8'>
@@ -158,15 +165,15 @@ const DetailsOrder = ({ showSidebar }) => {
                                 {activeTab === 'userInfo' && <div className='space-y-8'>
                                     <div className='grid grid-cols-3 place-items-center'>
                                         <div className='space-y-8 font-semibold col-span-1'>
-                                            <h3>Name</h3>
-                                            <h3>Email</h3>
-                                            <h3>Address</h3>
-                                            <h3>Phone</h3>
-                                            <h3>City</h3>
-                                            <h3>Province</h3>
-                                            <h3>District</h3>
-                                            <h3>Commune</h3>
-                                            <h3>Country</h3>
+                                            <h3>{t('user name')}</h3>
+                                            <h3>{t('user email')}</h3>
+                                            <h3>{t('user address')}</h3>
+                                            <h3>{t('user phone')}</h3>
+                                            <h3>{t('user city')}</h3>
+                                            <h3>{t('user province')}</h3>
+                                            <h3>{t('user district')}</h3>
+                                            <h3>{t('user commune')}</h3>
+                                            <h3>{t('user country')}</h3>
                                         </div>
                                         <div className='col-span-2'>
                                             <div className=''>

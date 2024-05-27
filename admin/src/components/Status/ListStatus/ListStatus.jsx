@@ -69,32 +69,34 @@ const ListStatus = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">{t('all status list')}</h2>
-                                <div className="flex items-center gap-6">
-                                    {filterStatus.length > 0 && <Link to={'/restorestatus'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <LiaTrashRestoreAltSolid size={20} />
-                                            {t('restore')}
-                                        </div>
-                                    </Link>}
-                                    <Link to={'/addstatus'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <BsDatabaseAdd />
-                                            {t('add')}
-                                        </div>
-                                    </Link>
+                            <div className="fixed w-[1100px] bg-white py-4 z-10">
+                                <div className="flex items-center justify-between gap-4 pb-8">
+                                    <h2 className="font-semibold text-2xl">{t('all status list')}</h2>
+                                    <div className="flex items-center gap-6">
+                                        {filterStatus.length > 0 && <Link to={'/restorestatus'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <LiaTrashRestoreAltSolid size={20} />
+                                                {t('restore')}
+                                            </div>
+                                        </Link>}
+                                        <Link to={'/addstatus'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <BsDatabaseAdd />
+                                                {t('add')}
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
                                 <div className="sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
                                     <p className="ml-4">{t('status name')}</p>
                                     <p>{t('status description')}</p>
                                     <p className="ml-12">{t('functionality')}</p>
                                 </div>
-                                <hr className="my-4 sm:block hidden" />
+                                <hr className="mt-4 sm:block hidden border-third border-2" />
+                            </div>
+                            <div className="pt-40">
                                 <div>
                                     {allStatus.map((status, index) => (
                                         <div key={index}>

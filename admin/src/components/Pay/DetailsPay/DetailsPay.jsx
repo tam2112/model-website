@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react';
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const DetailsPay = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('details pay title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [pay, setPay] = useState({
         type: '',
@@ -35,21 +42,21 @@ const DetailsPay = ({ showSidebar }) => {
                             <div className='mt-4 space-y-16'>
                                 <div className='flex items-center justify-between'>
                                     <div>
-                                        <h2 className='text-2xl font-bold'>Details Pay - {pay.name}</h2>
+                                        <h2 className='text-2xl font-bold'>{t('details pay')} - {pay.name}</h2>
                                     </div>
                                     <Link to={'/listpay'} className="btn-primary rounded-md px-4">
                                         <div className='flex items-center gap-2'>
                                             <RiArrowGoBackLine />
-                                            Back to list
+                                            {t('back to list')}
                                         </div>
                                     </Link>
                                 </div>
                                 <div className='grid grid-cols-3 place-items-center'>
                                     <div className='space-y-8 font-semibold col-span-1'>
-                                        <h3>Type</h3>
-                                        <h3>Name</h3>
-                                        <h3>Image</h3>
-                                        <h3>Date Created</h3>
+                                        <h3>{t('pay type')}</h3>
+                                        <h3>{t('pay name')}</h3>
+                                        <h3>{t('pay image')}</h3>
+                                        <h3>{t('date created')}</h3>
                                     </div>
                                     <div className='space-y-8 col-span-2'>
                                         <p>{pay.type}</p>

@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react';
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const DetailsProduct = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('details product title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [product, setProduct] = useState({
         name: '',
@@ -73,15 +80,15 @@ const DetailsProduct = ({ showSidebar }) => {
                         <div className='mt-2'>
                             <div className='flex justify-between items-center'>
                                 <div className='flex gap-6'>
-                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'info' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('info')}>Info</button>
-                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'quantity' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('quantity')}>Quantity</button>
-                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'mainImage' ? 'bg-primary text-white' : 'bg-white text-black'} `} onClick={() => setActiveTab('mainImage')}>Main Image</button>
-                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'subImage' ? 'bg-primary text-white' : 'bg-white text-black'} `} onClick={() => setActiveTab('subImage')}>Sub Image</button>
+                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'info' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('info')}>{t('product info')}</button>
+                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'quantity' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('quantity')}>{t('product quantity')}</button>
+                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'mainImage' ? 'bg-primary text-white' : 'bg-white text-black'} `} onClick={() => setActiveTab('mainImage')}>{t('product main image')}</button>
+                                    <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'subImage' ? 'bg-primary text-white' : 'bg-white text-black'} `} onClick={() => setActiveTab('subImage')}>{t('product sub image')}</button>
                                 </div>
                                 <Link to={'/listproduct'} className="btn-primary rounded-md px-4">
                                     <div className='flex items-center gap-2'>
                                         <RiArrowGoBackLine />
-                                        Back to list
+                                        {t('back to list')}
                                     </div>
                                 </Link>
                             </div>
@@ -91,9 +98,9 @@ const DetailsProduct = ({ showSidebar }) => {
                             {activeTab === 'info' && <div className='mt-16'>
                                 <div className='grid grid-cols-3 place-items-center'>
                                     <div className='space-y-8 font-semibold col-span-1'>
-                                        <h3>Product Name</h3>
-                                        <h3>Price</h3>
-                                        <h3>Category</h3>
+                                        <h3>{t('product name')}</h3>
+                                        <h3>{t('product price')}</h3>
+                                        <h3>{t('product category')}</h3>
                                     </div>
                                     <div className='space-y-8 col-span-2'>
                                         <p>{product.name}</p>
@@ -108,7 +115,7 @@ const DetailsProduct = ({ showSidebar }) => {
                                 {product.sizes.map((item, index) => (
                                     <div key={index} className='mx-52'>
                                         <div className='flex space-y-4 items-center justify-between'>
-                                            <h3 className='font-semibold text-lg'>Size - {getSizeName(item.size)}</h3>
+                                            <h3 className='font-semibold text-lg'>{t('product size')} - {getSizeName(item.size)}</h3>
                                             <button className='border-[1px] border-primary min-w-[60px] py-2 rounded-sm cursor-default'>{item.quantity}</button>
                                         </div>
                                         <hr className='mt-2' />

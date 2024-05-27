@@ -69,32 +69,34 @@ const ListSize = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">{t('all sizes list')}</h2>
-                                <div className="flex items-center gap-6">
-                                    {filterSizes.length > 0 && <Link to={'/restoresize'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <LiaTrashRestoreAltSolid size={20} />
-                                            {t('restore')}
-                                        </div>
-                                    </Link>}
-                                    <Link to={'/addsize'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <BsDatabaseAdd />
-                                            {t('add')}
-                                        </div>
-                                    </Link>
+                            <div className="fixed w-[1100px] bg-white z-10 py-4">
+                                <div className="flex items-center justify-between">
+                                    <h2 className="font-semibold text-2xl">{t('all sizes list')}</h2>
+                                    <div className="flex items-center gap-6">
+                                        {filterSizes.length > 0 && <Link to={'/restoresize'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <LiaTrashRestoreAltSolid size={20} />
+                                                {t('restore')}
+                                            </div>
+                                        </Link>}
+                                        <Link to={'/addsize'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <BsDatabaseAdd />
+                                                {t('add')}
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <div className="sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
+                                <div className="mt-8 sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
                                     <p className="ml-4">{t('size type')}</p>
                                     <p>{t('size name')}</p>
                                     <p className="ml-12">{t('functionality')}</p>
                                 </div>
-                                <hr className="my-4 sm:block hidden" />
+                                <hr className="mt-4 sm:block hidden border-third border-2" />
+                            </div>
+                            <div className="pt-40">
                                 <div>
                                     {allSizes.map((size, index) => (
                                         <div key={index}>

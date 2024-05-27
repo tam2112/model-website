@@ -5,8 +5,15 @@ import { TbListDetails } from "react-icons/tb";
 import { LiaEditSolid, LiaTrashRestoreAltSolid } from "react-icons/lia";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const ListProduct = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('list product title')
+    }, [i18n.language])
+
     const [allProducts, setAllProducts] = useState([]);
     const [allCategories, setAllCategories] = useState([]);
     const [sortBy, setSortBy] = useState("all");
@@ -102,8 +109,8 @@ const ListProduct = ({ showSidebar }) => {
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Delete success',
+                title: t('title swal'),
+                text: t('delete success'),
                 position: 'center',
             });
         })
@@ -125,47 +132,49 @@ const ListProduct = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">All Products List</h2>
-                                <div className="flex items-center gap-6">
+                            <div className="fixed w-[1100px] bg-white py-4 z-10">
+                                <div className="flex items-center justify-between gap-4 pb-8">
+                                    <h2 className="font-semibold text-2xl">{t('all product list')}</h2>
                                     <div className="flex items-center gap-6">
-                                        <h2 className="">Sort by:</h2>
-                                        <select name="sort" className='px-2 py-1 border-[1px] border-primary' onChange={handleSortChange}>
-                                            <option value="all">All</option>
-                                            <option value="AZ">A-Z</option>
-                                            <option value="ZA">Z-A</option>
-                                            <option value="priceHighToLow">Price: High to Low</option>
-                                            <option value="priceLowToHigh">Price: Low to High</option>
-                                            {allCategories.map(category => (
-                                                <option key={category._id} value={category._id}>Category: {category.name}</option>
-                                            ))}
-                                        </select>
+                                        <div className="flex items-center gap-6">
+                                            <h2 className="">{t('sort by')}</h2>
+                                            <select name="sort" className='px-2 py-1 border-[1px] border-primary' onChange={handleSortChange}>
+                                                <option value="all">{t('all')}</option>
+                                                <option value="AZ">A-Z</option>
+                                                <option value="ZA">Z-A</option>
+                                                <option value="priceHighToLow">{t('price high to low')}</option>
+                                                <option value="priceLowToHigh">{t('price low to high')}</option>
+                                                {allCategories.map(category => (
+                                                    <option key={category._id} value={category._id}>{t('category option')}: {category.name}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        {filterProduct.length > 0 && <Link to={'/restoreproduct'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <LiaTrashRestoreAltSolid size={20} />
+                                                {t('restore')}
+                                            </div>
+                                        </Link>}
+                                        <Link to={'/addproduct'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <BsDatabaseAdd />
+                                                {t('add')}
+                                            </div>
+                                        </Link>
                                     </div>
-                                    {filterProduct.length > 0 && <Link to={'/restoreproduct'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <LiaTrashRestoreAltSolid size={20} />
-                                            Restore
-                                        </div>
-                                    </Link>}
-                                    <Link to={'/addproduct'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <BsDatabaseAdd />
-                                            Add
-                                        </div>
-                                    </Link>
                                 </div>
-                            </div>
-                            <div>
                                 <div className="sm:grid lg:grid-cols-[0.7fr_2fr_1fr_1fr_1fr] sm:grid-cols-[0.7fr_1.5fr_1fr_1fr_1fr] hidden">
-                                    <p>Products</p>
-                                    <p>Title</p>
-                                    <p>Price</p>
-                                    <p>Category</p>
-                                    <p>Functionality</p>
+                                    <p>{t('product image')}</p>
+                                    <p>{t('product title')}</p>
+                                    <p>{t('product price')}</p>
+                                    <p>{t('product category')}</p>
+                                    <p>{t('functionality')}</p>
                                 </div>
-                                <hr className="my-4 sm:block hidden" />
+                                <hr className="mt-4 sm:block hidden border-third border-2" />
+                            </div>
+                            <div className="pt-40">
                                 <div>
                                     {allProducts.map((product, index) => (
                                         <div key={index}>
@@ -183,19 +192,19 @@ const ListProduct = ({ showSidebar }) => {
                                                         <div className="flex flex-col gap-4">
                                                             <Link to={`/detailsproduct/${product.id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {}}>
                                                                 <div className="flex items-center gap-1">
-                                                                    Details
+                                                                    {t('details')}
                                                                     <TbListDetails />
                                                                 </div>
                                                             </Link>
                                                             <Link to={`/updateproduct/${product.id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300">
                                                                 <div className="flex items-center gap-1">
-                                                                    Edit
+                                                                    {t('edit')}
                                                                     <LiaEditSolid />
                                                                 </div>
                                                             </Link>
                                                             <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {remove_product(product.id)}}>
                                                                 <div className="flex items-center gap-1">
-                                                                    Delete
+                                                                    {t('delete')}
                                                                     <RiDeleteBinLine />
                                                                 </div>
                                                             </div>

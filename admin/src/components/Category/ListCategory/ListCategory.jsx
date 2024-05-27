@@ -6,8 +6,15 @@ import { LiaEditSolid, LiaTrashRestoreAltSolid } from "react-icons/lia";
 import { MdPublishedWithChanges, MdOutlineUnpublished } from "react-icons/md";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const ListCategory = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('list category title')
+    }, [i18n.language])
+
     const [allCategories, setAllCategories] = useState([]);
     const [allDeletedItems, setAllDeletedItems] = useState([]);
 
@@ -48,8 +55,8 @@ const ListCategory = ({ showSidebar }) => {
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Delete success',
+                title: t('title swal'),
+                text: t('delete success'),
                 position: 'center',
             });
         })
@@ -63,33 +70,35 @@ const ListCategory = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">All Categories List</h2>
-                                <div className="flex items-center gap-6">
-                                    {filterCategories.length > 0 && <Link to={'/restorecategory'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <LiaTrashRestoreAltSolid size={20} />
-                                            Restore
-                                        </div>
-                                    </Link>}
-                                    <Link to={'/addcategory'} className="btn-primary rounded-md px-4">
-                                        <div className="flex items-center gap-2">
-                                            <BsDatabaseAdd />
-                                            Add
-                                        </div>
-                                    </Link>
+                            <div className="fixed w-[1100px] bg-white py-4 z-10">
+                                <div className="flex items-center justify-between gap-4 pb-8">
+                                    <h2 className="font-semibold text-2xl">{t('all category list')}</h2>
+                                    <div className="flex items-center gap-6">
+                                        {filterCategories.length > 0 && <Link to={'/restorecategory'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <LiaTrashRestoreAltSolid size={20} />
+                                                {t('restore')}
+                                            </div>
+                                        </Link>}
+                                        <Link to={'/addcategory'} className="btn-primary rounded-md px-4">
+                                            <div className="flex items-center gap-2">
+                                                <BsDatabaseAdd />
+                                                {t('add')}
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
                                 <div className="sm:grid lg:grid-cols-[1.5fr_2fr_1fr_2fr] sm:grid-cols-[1.5fr_1.5fr_1fr_2fr] hidden">
-                                    <p className="ml-4">Name</p>
-                                    <p>Description</p>
-                                    <p>Published</p>
-                                    <p className="ml-12">Functionality</p>
+                                    <p className="ml-4">{t('category name')}</p>
+                                    <p>{t('category description')}</p>
+                                    <p>{t('category published')}</p>
+                                    <p className="ml-12">{t('functionality')}</p>
                                 </div>
-                                <hr className="my-4 sm:block hidden" />
+                                <hr className="mt-4 sm:block hidden border-third border-2" />
+                            </div>
+                            <div className="pt-40">
                                 <div>
                                     {allCategories.map((category, index) => (
                                         <div key={index}>
@@ -105,19 +114,19 @@ const ListCategory = ({ showSidebar }) => {
                                                     <div className="flex flex-col gap-4">
                                                         <Link to={`/detailscategory/${category.id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {}}>
                                                             <div className="flex items-center gap-1">
-                                                                Details
+                                                                {t('details')}
                                                                 <TbListDetails />
                                                             </div>
                                                         </Link>
                                                         <Link to={`/updatecategory/${category.id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300">
                                                             <div className="flex items-center gap-1">
-                                                                Edit
+                                                                {t('edit')}
                                                                 <LiaEditSolid />
                                                             </div>
                                                         </Link>
                                                         <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {remove_category(category._id)}}>
                                                             <div className="flex items-center gap-1">
-                                                                Delete
+                                                                {t('delete')}
                                                                 <RiDeleteBinLine />
                                                             </div>
                                                         </div>

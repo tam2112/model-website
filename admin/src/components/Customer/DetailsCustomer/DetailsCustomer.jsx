@@ -3,8 +3,15 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import CustomerCart from './CustomerCart';
+import { useTranslation } from 'react-i18next';
 
 const DetailsCustomer = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('details customer title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [customer, setCustomer] = useState({
         name: '',
@@ -65,15 +72,15 @@ const DetailsCustomer = ({ showSidebar }) => {
                             <div className='mt-4 space-y-8'>
                                 <div className='flex justify-between items-center'>
                                     <div className='flex gap-6'>
-                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'info' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('info')}>Info</button>
-                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'contact' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('contact')}>Contact</button>
-                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'cart' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('cart')}>Cart</button>
-                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'wishlist' ? 'bg-primary text-white' : 'bg-white text-black'} `} onClick={() => setActiveTab('wishlist')}>Wishlist</button>
+                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'info' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('info')}>{t('user info')}</button>
+                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'contact' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('contact')}>{t('user contact')}</button>
+                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'cart' ? 'bg-primary text-white' : 'bg-white text-black'}`} onClick={() => setActiveTab('cart')}>{t('user cart')}</button>
+                                        <button className={`px-6 py-2 border-primary border-2 rounded-md hover:bg-primary hover:text-white duration-300 ${activeTab === 'wishlist' ? 'bg-primary text-white' : 'bg-white text-black'} `} onClick={() => setActiveTab('wishlist')}>{t('user wishlist')}</button>
                                     </div>
                                     <Link to={'/listcustomer'} className="btn-primary rounded-md px-4">
                                         <div className='flex items-center gap-2'>
                                             <RiArrowGoBackLine />
-                                            Back to list
+                                            {t('back to list')}
                                         </div>
                                     </Link>
                                 </div>
@@ -82,10 +89,10 @@ const DetailsCustomer = ({ showSidebar }) => {
                                 {/* Info */}
                                 {activeTab === 'info' && <div className='grid grid-cols-3 place-items-center'>
                                     <div className='space-y-8 font-semibold col-span-1'>
-                                        <h3>Name</h3>
-                                        <h3>Email</h3>
-                                        <h3>Password</h3>
-                                        <h3>Date</h3>
+                                        <h3>{t('user name')}</h3>
+                                        <h3>{t('user email')}</h3>
+                                        <h3>{t('user password')}</h3>
+                                        <h3>{t('user date')}</h3>
                                     </div>
                                     <div className='space-y-8 col-span-2'>
                                         <p>{customer.name}</p>
@@ -98,14 +105,14 @@ const DetailsCustomer = ({ showSidebar }) => {
                                 {/* Contact */}
                                 {activeTab === 'contact' && <div className='grid grid-cols-3 place-items-center'>
                                     <div className='space-y-8 font-semibold col-span-1'>
-                                        <h3>Phone</h3>
-                                        <h3>Address</h3>
-                                        <h3>Birthday</h3>
-                                        <h3>District</h3>
-                                        <h3>Commune</h3>
-                                        <h3>City</h3>
-                                        <h3>Province</h3>
-                                        <h3>Country</h3>
+                                        <h3>{t('user phone')}</h3>
+                                        <h3>{t('user address')}</h3>
+                                        <h3>{t('user birthday')}</h3>
+                                        <h3>{t('user district')}</h3>
+                                        <h3>{t('user commune')}</h3>
+                                        <h3>{t('user city')}</h3>
+                                        <h3>{t('user province')}</h3>
+                                        <h3>{t('user country')}</h3>
                                     </div>
                                     <div className='space-y-8 col-span-2'>
                                         <p>{customer.phone}</p>
@@ -122,12 +129,12 @@ const DetailsCustomer = ({ showSidebar }) => {
                                 {/* Cart */}
                                 {activeTab === 'cart' && <>
                                     <div className="sm:grid lg:grid-cols-[0.7fr_2fr_1fr_1fr_1fr_1fr] sm:grid-cols-[0.7fr_1.5fr_1fr_1fr_1fr_1fr] hidden" data-aos='zoom-in'>
-                                        <p>Products</p>
-                                        <p>Title</p>
-                                        <p>Price</p>
-                                        <p>Size</p>
-                                        <p>Quantity</p>
-                                        <p>Total</p>
+                                        <p>{t('product image')}</p>
+                                        <p>{t('product title')}</p>
+                                        <p>{t('product price')}</p>
+                                        <p>{t('product size')}</p>
+                                        <p>{t('order quantity')}</p>
+                                        <p>{t('order total')}</p>
                                     </div>
                                     <hr className="my-4 sm:block hidden" />
                                     <div>

@@ -3,8 +3,15 @@ import { RiArrowGoBackLine, RiDeleteBinLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const RestoreProduct = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('restore product title')
+    }, [i18n.language])
+
     const [allCategories, setAllCategories] = useState([]);
     const [sortBy, setSortBy] = useState("all");
     const [allDeletedItems, setAllDeletedItems] = useState([]);
@@ -88,8 +95,8 @@ const RestoreProduct = ({ showSidebar }) => {
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Restore success',
+                title: t('title swal'),
+                text: t('restore success'),
                 position: 'center',
             });
         })
@@ -113,8 +120,8 @@ const RestoreProduct = ({ showSidebar }) => {
             }).then(() => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Thông báo',
-                    text: 'Delete success',
+                    title: t('title swal'),
+                    text: t('delete success'),
                     position: 'center',
                 });
             })
@@ -141,41 +148,43 @@ const RestoreProduct = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">All Products List (Deleted)</h2>
-                                <div className="flex items-center gap-6">
+                            <div className="fixed w-[1100px] bg-white py-4 z-10">
+                                <div className="flex items-center justify-between gap-4 pb-8">
+                                    <h2 className="font-semibold text-2xl">{t('all product list')} ({t('deleted')})</h2>
                                     <div className="flex items-center gap-6">
-                                        <h2 className="">Sort by:</h2>
-                                        <select name="sort" className='px-2 py-1 border-[1px] border-primary' onChange={handleSortChange}>
-                                            <option value="all">All</option>
-                                            <option value="AZ">A-Z</option>
-                                            <option value="ZA">Z-A</option>
-                                            <option value="priceHighToLow">Price: High to Low</option>
-                                            <option value="priceLowToHigh">Price: Low to High</option>
-                                            {allCategories.map(category => (
-                                                <option key={category._id} value={category._id}>Category: {category.name}</option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <Link to={'/listproduct'} className="btn-primary rounded-md px-4">
-                                        <div className='flex items-center gap-2'>
-                                            <RiArrowGoBackLine />
-                                            Back to list
+                                        <div className="flex items-center gap-6">
+                                            <h2 className="">{t('sort by')}</h2>
+                                            <select name="sort" className='px-2 py-1 border-[1px] border-primary' onChange={handleSortChange}>
+                                                <option value="all">{t('all')}</option>
+                                                <option value="AZ">A-Z</option>
+                                                <option value="ZA">Z-A</option>
+                                                <option value="priceHighToLow">{t('price high to low')}</option>
+                                                <option value="priceLowToHigh">{t('price low to high')}</option>
+                                                {allCategories.map(category => (
+                                                    <option key={category._id} value={category._id}>{t('category option')}: {category.name}</option>
+                                                ))}
+                                            </select>
                                         </div>
-                                    </Link>
+                                        <Link to={'/listproduct'} className="btn-primary rounded-md px-4">
+                                            <div className='flex items-center gap-2'>
+                                                <RiArrowGoBackLine />
+                                                {t('back to list')}
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
                                 <div className="sm:grid lg:grid-cols-[0.7fr_2fr_1fr_1fr_1fr] sm:grid-cols-[0.7fr_1.5fr_1fr_1fr_1fr] hidden">
-                                    <p>Products</p>
-                                    <p>Title</p>
-                                    <p>Price</p>
-                                    <p>Category</p>
-                                    <p>Functionality</p>
+                                    <p>{t('product image')}</p>
+                                    <p>{t('product title')}</p>
+                                    <p>{t('product price')}</p>
+                                    <p>{t('product category')}</p>
+                                    <p>{t('functionality')}</p>
                                 </div>
-                                <hr className="my-4 sm:block hidden" />
+                                <hr className="mt-4 sm:block hidden border-third border-2" />
+                            </div>
+                            <div className="pt-40">
                                 <div>
                                     {filterProducts.map((product, index) => (
                                         <div key={index}>
@@ -192,13 +201,13 @@ const RestoreProduct = ({ showSidebar }) => {
                                                     <div className="flex flex-col gap-4">
                                                         <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {restore_product(product.data.id)}}>
                                                             <div className="flex items-center gap-1">
-                                                                Restore
+                                                                {t('restore')}
                                                                 <LiaTrashRestoreAltSolid size={20} />
                                                             </div>
                                                         </div>
                                                         <div className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300" onClick={() => {remove_product(product._id)}}>
                                                             <div className="flex items-center gap-1">
-                                                                Delete
+                                                                {t('delete')}
                                                                 <RiDeleteBinLine size={20} />
                                                             </div>
                                                         </div>
@@ -217,7 +226,7 @@ const RestoreProduct = ({ showSidebar }) => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white p-8 rounded-md">
-                        <p className="text-lg">Are you sure you want to delete this product permanently?</p>
+                        <p className="text-lg">{t('are you sure you want to delete this product permanently')}</p>
                         <div className="flex justify-end mt-4">
                             <button className="btn-primary mr-4" onClick={confirmDelete}>Yes</button>
                             <button className="btn-primary" onClick={cancelDelete}>No</button>

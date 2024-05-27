@@ -3,8 +3,15 @@ import upload_area from '../../../assets/upload_area.svg'
 import { Link } from 'react-router-dom'
 import { RiArrowGoBackLine } from "react-icons/ri";
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next'
 
 const AddProduct = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('add product title')
+    }, [i18n.language])
+
     const [mainImage, setMainImage] = useState(false)
     const [subImages, setSubImages] = useState([])
     const [productDetails, setProductDetails] = useState({
@@ -105,24 +112,24 @@ const AddProduct = ({ showSidebar }) => {
 
         // Kiểm tra và cập nhật trạng thái lỗi
         if (e.target.name === 'name') {
-            setErrors({...errors, name: e.target.value.trim() ? '' : 'Tên sản phẩm không được để trống'});
+            setErrors({...errors, name: e.target.value.trim() ? '' : t('product name cannot be blank')});
         } else if (e.target.name === 'price') {
-            setErrors({...errors, price: e.target.value.trim() ? '' : 'Giá sản phẩm không được để trống'});
+            setErrors({...errors, price: e.target.value.trim() ? '' : t('product price cannot be blank')});
         }
     }
 
     const Add_Product = async () => {
         // Kiểm tra trạng thái lỗi trước khi gửi yêu cầu
         if (!productDetails.name.trim()) {
-            setErrors({...errors, name: 'Tên sản phẩm không được để trống'});
+            setErrors({...errors, name: t('product name cannot be blank')});
             return;
         }
         if (!productDetails.price.trim()) {
-            setErrors({...errors, price: 'Giá sản phẩm không được để trống'});
+            setErrors({...errors, price: t('product price cannot be blank')});
             return;
         }
         if (!mainImage) {
-            setErrors({...errors, mainImage: 'Vui lòng chọn hình ảnh chính cho sản phẩm'});
+            setErrors({...errors, mainImage: t('please select main image for product')});
             return;
         }
     
@@ -176,15 +183,15 @@ const AddProduct = ({ showSidebar }) => {
                     data.success ? 
                         Swal.fire({
                             icon: 'success',
-                            title: 'Thông báo',
-                            text: 'Product Added',
+                            title: t('title swal'),
+                            text: t('product added'),
                             position: 'center',
                         }) 
                     : 
                         Swal.fire({
                             icon: 'error',
-                            title: 'Thông báo',
-                            text: data.message,
+                            title: t('title swal'),
+                            text: t(data.message),
                             position: 'center',
                         })
                 })
@@ -192,8 +199,8 @@ const AddProduct = ({ showSidebar }) => {
                     console.error('Error:', error);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Thông báo',
-                        text: 'Failed to add product',
+                        title: t('title swal'),
+                        text: t('failed to add product'),
                         position: 'center',
                     })
                 });
@@ -204,7 +211,7 @@ const AddProduct = ({ showSidebar }) => {
             Swal.fire({
                 icon: 'error',
                 title: 'Thông báo',
-                text: 'Failed to upload images',
+                text: t('failed to upload image'),
                 position: 'center',
             })
         });
@@ -231,19 +238,19 @@ const AddProduct = ({ showSidebar }) => {
                     <div className={`bg-white ${showSidebar ? 'w-[70%]' : 'w-[60%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto relative`}>
                         <div className="space-y-6 mt-4">
                             <div className="space-y-2">
-                                <p>Product Name</p>
+                                <p>{t('product name')}</p>
                                 <input value={productDetails.name} onChange={changeHandler} type="text" name="name" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 {errors.name && <p className="text-red-500">{errors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <p>Price</p>
+                                <p>{t('product price')}</p>
                                 <input value={productDetails.price} onChange={changeHandler} type="text" name="price" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 {errors.price && <p className="text-red-500">{errors.price}</p>}
                             </div>
                             <div className="space-y-2">
-                                <p>Category</p>
+                                <p>{t('product category')}</p>
                                 <select value={selectedCategory} onChange={handleCategoryChange} name="category" className='w-[50%] px-2 py-1 border-[1px] border-primary'>
-                                    <option value="">-- Select Category --</option>
+                                    <option value="">-- {t('select product category')} --</option>
                                     {categories.map(category => (
                                         <option key={category._id} value={category._id}>{category.name}</option>
                                     ))}
@@ -251,7 +258,7 @@ const AddProduct = ({ showSidebar }) => {
                             </div>
                             {filteredSizes.length > 0 &&
                                 <div className="space-y-4">
-                                    <p>Quantity</p>
+                                    <p>{t('product quantity')}</p>
                                     {filteredSizes.map((size) => (
                                         <div key={size._id} className='flex gap-4 items-center'>
                                             <label htmlFor="" className='w-28 h-[40px] text-center leading-[40px] bg-third'>{size.name}</label>
@@ -262,7 +269,7 @@ const AddProduct = ({ showSidebar }) => {
                             }
                             <div className="flex items-center gap-14">
                                 <div>
-                                    <p className='mb-4'>Main Image</p>
+                                    <p className='mb-4'>{t('product main image')}</p>
                                     <label htmlFor="file-input-main">
                                         <img src={mainImage ? URL.createObjectURL(mainImage) : upload_area} alt="" className='w-28 h-[164px] object-cover' />
                                     </label>
@@ -270,7 +277,7 @@ const AddProduct = ({ showSidebar }) => {
                                     {errors.mainImage && <p className="text-red-500">{errors.mainImage}</p>}
                                 </div>
                                 <div>
-                                    <p className='mb-4'>Sub Image</p>
+                                    <p className='mb-4'>{t('product sub image')}</p>
                                     <div className='flex gap-4 items-center'>
                                         <label htmlFor="file-input-sub">
                                             <div className='flex items-center gap-4'>
@@ -287,13 +294,13 @@ const AddProduct = ({ showSidebar }) => {
                                     </div>
                                 </div>
                             </div>
-                            <button onClick={() => Add_Product()} className='btn-primary'>ADD</button>
+                            <button onClick={() => Add_Product()} className='btn-primary uppercase'>{t('add')}</button>
                         </div>
                         <div className='absolute top-6 right-6 flex'>
                             <Link to={'/listproduct'} className="btn-primary rounded-md px-4">
                                 <div className='flex items-center gap-2'>
                                     <RiArrowGoBackLine />
-                                    Back to list
+                                    {t('back to list')}
                                 </div>
                             </Link>
                         </div>

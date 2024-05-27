@@ -3,8 +3,15 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { MdPublishedWithChanges, MdOutlineUnpublished } from "react-icons/md";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const DetailsCategory = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('details category title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [category, setCategory] = useState({
         name: '',
@@ -37,21 +44,21 @@ const DetailsCategory = ({ showSidebar }) => {
                             <div className='mt-4 space-y-16'>
                                 <div className='flex items-center justify-between'>
                                     <div>
-                                        <h2 className='text-2xl font-bold'>Details category ({category.name})</h2>
+                                        <h2 className='text-2xl font-bold'>{t('details category')} ({category.name})</h2>
                                     </div>
                                     <Link to={'/listcategory'} className="btn-primary rounded-md px-4">
                                         <div className='flex items-center gap-2'>
                                             <RiArrowGoBackLine />
-                                            Back to list
+                                            {t('back to list')}
                                         </div>
                                     </Link>
                                 </div>
                                 <div className='grid grid-cols-3 place-items-center'>
                                     <div className='space-y-8 font-semibold col-span-1'>
-                                        <h3>Category</h3>
-                                        <h3>Description</h3>
-                                        <h3>Published</h3>
-                                        <h3>Date</h3>
+                                        <h3>{t('category name')}</h3>
+                                        <h3>{t('category description')}</h3>
+                                        <h3>{t('category published')}</h3>
+                                        <h3>{t('date created')}</h3>
                                     </div>
                                     <div className='space-y-8 col-span-2'>
                                         <p>{category.name}</p>

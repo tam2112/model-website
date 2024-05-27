@@ -3,10 +3,17 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 import upload_area from '../../../assets/upload_area.svg'
 
 const UpdatePay = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('update pay title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [pay, setPay] = useState({
         type: '',
@@ -63,14 +70,14 @@ const UpdatePay = ({ showSidebar }) => {
                 await axios.put(`http://localhost:5000/updatepay/${id}`, updatedPay);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Thông báo',
-                    text: 'Pay updated successfully',
+                    title: t('title swal'),
+                    text: t('pay updated successfully'),
                     position: 'center',
                 })
                 setPay(updatedPay);
             } else {
                 // Xử lý khi upload ảnh không thành công
-                console.log('Failed to upload images');
+                console.log('Failed to upload image');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -91,30 +98,30 @@ const UpdatePay = ({ showSidebar }) => {
                         <div className="space-y-6 mt-4">
                             <form onSubmit={handleSubmit} className='space-y-6'>
                                 <div className="space-y-2">
-                                    <p>Type</p>
+                                    <p>{t('pay type')}</p>
                                     <input value={pay.type} onChange={handleInputChange} type="text" name="type" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 </div>
                                 <div className="space-y-2">
-                                    <p>Name</p>
+                                    <p>{t('pay name')}</p>
                                     <input value={pay.name} onChange={handleInputChange} type="text" name="name" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 </div>
                                 <div className='space-y-2'>
                                     <div>
-                                        <p className='mb-4'>Image</p>
+                                        <p className='mb-4'>{t('pay image')}</p>
                                         <label htmlFor="file-input-image">
                                             <img src={pay.image || upload_area} alt="" className='w-28 h-[140px] object-contain' />
                                         </label>
                                         <input onChange={handleImageChange} type="file" name="main_img" id="file-input-image" hidden />
                                     </div>
                                 </div>
-                                <button type="submit" className='btn-primary'>SAVE</button>
+                                <button type="submit" className='btn-primary uppercase'>{t('save')}</button>
                             </form>
                         </div>
                         <div className='absolute top-6 right-6 flex'>
                             <Link to={'/listpay'} className="btn-primary rounded-md px-4">
                                 <div className='flex items-center gap-2'>
                                     <RiArrowGoBackLine />
-                                    Back to list
+                                    {t('back to list')}
                                 </div>
                             </Link>
                         </div>

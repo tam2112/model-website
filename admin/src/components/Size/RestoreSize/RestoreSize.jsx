@@ -90,26 +90,28 @@ const RestoreSize = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8">
-                                <h2 className="font-semibold text-2xl">{t('all sizes list')} ({t('deleted')})</h2>
-                                <div className="flex items-center gap-6">
-                                    <Link to={'/listsize'} className="btn-primary rounded-md px-4">
-                                        <div className='flex items-center gap-2'>
-                                            <RiArrowGoBackLine />
-                                            {t('back to list')}
-                                        </div>
-                                    </Link>
+                            <div className="fixed w-[1100px] bg-white py-4 z-10">
+                                <div className="flex items-center justify-between gap-4 pb-8">
+                                    <h2 className="font-semibold text-2xl">{t('all sizes list')} ({t('deleted')})</h2>
+                                    <div className="flex items-center gap-6">
+                                        <Link to={'/listsize'} className="btn-primary rounded-md px-4">
+                                            <div className='flex items-center gap-2'>
+                                                <RiArrowGoBackLine />
+                                                {t('back to list')}
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
                                 <div className="sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
                                     <p className="ml-4">{t('size type')}</p>
                                     <p>{t('size name')}</p>
                                     <p className="ml-12">{t('functionality')}</p>
                                 </div>
-                                <hr className="my-4 sm:block hidden" />
+                                <hr className="mt-4 sm:block hidden border-third border-2" />
+                            </div>
+                            <div className="pt-40">
                                 <div>
                                     {filterSizes.map((size, index) => (
                                         <div key={index}>
@@ -145,10 +147,10 @@ const RestoreSize = ({ showSidebar }) => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white p-8 rounded-md">
-                        <p className="text-lg">Are you sure you want to delete this size permanently?</p>
+                        <p className="text-lg">{t('are you sure you want to delete this size permanently')}</p>
                         <div className="flex justify-end mt-4">
-                            <button className="btn-primary mr-4" onClick={confirmDelete}>Yes</button>
-                            <button className="btn-primary" onClick={cancelDelete}>No</button>
+                            <button className="btn-primary mr-4" onClick={confirmDelete}>{t('yes')}</button>
+                            <button className="btn-primary" onClick={cancelDelete}>{t('no')}</button>
                         </div>
                     </div>
                 </div>

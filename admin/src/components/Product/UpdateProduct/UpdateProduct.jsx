@@ -3,10 +3,17 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 import upload_area from '../../../assets/upload_area.svg'
 
 const UpdateProduct = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('update product title')
+    }, [i18n.language])
+
     const { id } = useParams();
     const [product, setProduct] = useState({
         name: '',
@@ -133,8 +140,8 @@ const UpdateProduct = ({ showSidebar }) => {
                 await axios.put(`http://localhost:5000/updateproduct/${id}`, updatedProduct);
                 Swal.fire({
                     icon: 'success',
-                    title: 'Thông báo',
-                    text: 'Product updated successfully',
+                    title: t('title swal'),
+                    text: t('product updated successfully'),
                     position: 'center',
                 })
                 setProduct(updatedProduct);
@@ -161,24 +168,24 @@ const UpdateProduct = ({ showSidebar }) => {
                         <div className="space-y-6 mt-4">
                             <form onSubmit={handleSubmit} className='space-y-6'>
                                 <div className="space-y-2">
-                                    <p>Product Name</p>
+                                    <p>{t('product name')}</p>
                                     <input value={product.name} onChange={handleInputChange} type="text" name="name" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 </div>
                                 <div className="space-y-2">
-                                    <p>Price</p>
+                                    <p>{t('product price')}</p>
                                     <input value={product.price} onChange={handleInputChange} type="text" name="price" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 </div>
                                 <div className="space-y-2">
-                                    <p>Category</p>
+                                    <p>{t('product category')}</p>
                                     <select value={product.category} onChange={handleInputChange} name="category" className='w-[50%] px-2 py-1 border-[1px] border-primary'>
-                                        <option value="">-- Select Category --</option>
+                                        <option value="">-- {t('select product category')} --</option>
                                         {categories.map(category => (
                                             <option key={category._id} value={category._id}>{category.name}</option>
                                         ))}
                                     </select>
                                 </div>
                                 <div className="space-y-2">
-                                    <p>Quantity</p>
+                                    <p>{t('product quantity')}</p>
                                     {product.sizes.map((item, index) => (
                                         <div key={index} className='flex gap-4 items-center'>
                                             <label htmlFor="" className='w-28 h-[40px] text-center leading-[40px] bg-third'>
@@ -190,14 +197,14 @@ const UpdateProduct = ({ showSidebar }) => {
                                 </div>
                                 <div className="flex items-center gap-14">
                                     <div>
-                                        <p className='mb-4'>Main Image</p>
+                                        <p className='mb-4'>{t('product main image')}</p>
                                         <label htmlFor="file-input-main">
                                             <img src={product.main_img || upload_area} alt="" className='w-28 h-[164px] object-cover' />
                                         </label>
                                         <input onChange={handleMainImageChange} type="file" name="main_img" id="file-input-main" hidden />
                                     </div>
                                     <div>
-                                        <p className='mb-4'>Sub Image</p>
+                                        <p className='mb-4'>{t('product sub image')}</p>
                                         <div className='flex gap-4 items-center'>
                                             <label htmlFor="file-input-sub">
                                                 <div className='flex items-center gap-4'>
@@ -214,14 +221,14 @@ const UpdateProduct = ({ showSidebar }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" className='btn-primary'>SAVE</button>
+                                <button type="submit" className='btn-primary uppercase'>{t('save')}</button>
                             </form>
                         </div>
                         <div className='absolute top-6 right-6 flex'>
                             <Link to={'/listproduct'} className="btn-primary rounded-md px-4">
                                 <div className='flex items-center gap-2'>
                                     <RiArrowGoBackLine />
-                                    Back to list
+                                    {t('back to list')}
                                 </div>
                             </Link>
                         </div>

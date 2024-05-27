@@ -5,8 +5,15 @@ import Box from '../../../assets/box.png'
 import OrderItem from './OrderItem'
 import Swal from "sweetalert2";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { useTranslation } from 'react-i18next'
 
 const ListOrder = ({ showSidebar }) => {
+    const { t, i18n } = useTranslation();
+
+    useEffect(() => {
+        window.document.title = t('list order title')
+    }, [i18n.language])
+
     const [allOrders, setAllOrders] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const [allStatus, setAllStatus] = useState([]);
@@ -84,8 +91,8 @@ const ListOrder = ({ showSidebar }) => {
         }).then(() => {
             Swal.fire({
                 icon: 'success',
-                title: 'Thông báo',
-                text: 'Delete success',
+                title: t('title swal'),
+                text: t('delete success'),
                 position: 'center',
             });
         })
@@ -130,21 +137,23 @@ const ListOrder = ({ showSidebar }) => {
         <>
             <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md py-4 px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 pb-4 overflow-y-auto`}>
                         <div>
-                            <div className="flex items-center justify-between gap-4 pb-8 mt-4">
-                                <h2 className="font-semibold text-2xl">All Orders List</h2>
-                                <div className="flex items-center gap-4">
-                                    <p>Sort by:</p>
-                                    <select value={selectedStatus} onChange={handleSortChange} className="border-[1px] border-primary min-w-[160px] px-2 py-1">
-                                        <option value="">All Status</option>
-                                        {allStatus.map(status => (
-                                            <option key={status._id} value={status._id}>{status.name}</option>
-                                        ))}
-                                    </select>
+                            <div className="fixed w-[1102px] bg-white z-10 py-4">
+                                <div className="flex items-center justify-between gap-4 mt-4">
+                                    <h2 className="font-semibold text-2xl">{t('all order list')}</h2>
+                                    <div className="flex items-center gap-4">
+                                        <p>{t('sort by')}</p>
+                                        <select value={selectedStatus} onChange={handleSortChange} className="border-[1px] border-primary min-w-[160px] px-2 py-1">
+                                            <option value="">{t('all status')}</option>
+                                            {allStatus.map(status => (
+                                                <option key={status._id} value={status._id}>{t(status.name)}</option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
+                            <div className="pt-28">
                                 <div className="space-y-6">
                                     {filteredOrders.map(order => (
                                         <div key={order._id} className="border-primary border-2 p-4 rounded-sm">
@@ -173,15 +182,15 @@ const ListOrder = ({ showSidebar }) => {
                                                         {order.deliveryData.map((item, index) => (
                                                             <div key={index} className="space-y-2">
                                                                 <p className="font-semibold">{item.name}</p>
-                                                                <p>Address: {item.address}</p>
-                                                                <p>City: {item.city}</p>
-                                                                <p>Phone: {item.phone}</p>
+                                                                <p>{t('order address')}: {item.address}</p>
+                                                                <p>{t('order city')}: {item.city}</p>
+                                                                <p>{t('order phone')}: {item.phone}</p>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 </div>
                                                 <div className="grid place-items-center">
-                                                    <p>Items: {order.quantity}</p>
+                                                    <p>{t('order items')}: {order.quantity}</p>
                                                 </div>
                                                 <div className="grid place-items-center">
                                                     <p>${order.total.toFixed(2)}</p>
@@ -197,26 +206,26 @@ const ListOrder = ({ showSidebar }) => {
                                                         {allStatus
                                                             .filter(status => status.name !== 'Cancelled')
                                                             .map(status => (
-                                                                <option key={status._id} value={status._id}>{status.name}</option>
+                                                                <option key={status._id} value={status._id}>{t(status.name)}</option>
                                                         ))}
                                                     </select>}
-                                                    {getStatusName(order.status) === 'Cancelled' && <p className="border-[1px] border-red-500 text-white bg-red-500 px-4 py-2 rounded-md">{getStatusName(order.status)}</p>}
+                                                    {getStatusName(order.status) === 'Cancelled' && <p className="border-[1px] border-red-500 text-white bg-red-500 px-4 py-2 rounded-md">{t(getStatusName(order.status))}</p>}
                                                 </div>
                                                     <div className="grid place-items-center">
                                                         <Link to={`/detailsorder/${order._id}`} className="w-[100px] border-primary border-2 py-2 justify-center rounded-md flex items-center cursor-pointer hover:bg-primary hover:text-white duration-300">
                                                             <div className="flex items-center gap-1">
-                                                                Details
+                                                                {t('details')}
                                                                 <TbListDetails />
                                                             </div>
                                                         </Link>
                                                         {getStatusName(order.status) === 'Cancelled' || getStatusName(order.status) === 'Delivered' && <div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
                                                             <div className="flex items-center gap-1">
-                                                                Delete
+                                                                {t('delete')}
                                                                 <RiDeleteBinLine />
                                                             </div>
                                                         </div>}
                                                     </div>
-                                                </div>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -229,10 +238,10 @@ const ListOrder = ({ showSidebar }) => {
             {showConfirmation && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
-                        <p className="sm:text-lg text-sm">Are you sure you want to delete this order?</p>
+                        <p className="sm:text-lg text-sm">{t('are you sure you want to delete this order')}</p>
                         <div className="flex justify-end mt-4">
-                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmDelete}>Yes</button>
-                            <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>No</button>
+                            <button className="btn-primary mr-4 sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={confirmDelete}>{t('yes')}</button>
+                            <button className="btn-primary sm:py-2 sm:px-10 py-2 px-8 text-sm" onClick={cancelDelete}>{t('no')}</button>
                         </div>
                     </div>
                 </div>

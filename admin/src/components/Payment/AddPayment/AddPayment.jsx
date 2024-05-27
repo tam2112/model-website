@@ -29,7 +29,7 @@ const AddPayment = ({ showSidebar }) => {
 
         // Kiểm tra và cập nhật trạng thái lỗi
         if (name === 'name') {
-            setErrors({...errors, name: value.trim() ? '' : 'Tên payment không được để trống'});
+            setErrors({...errors, name: value.trim() ? '' : t('payment name cannot be blank')});
         }
         
     }
@@ -37,7 +37,7 @@ const AddPayment = ({ showSidebar }) => {
     const Add_Payment = async () => {
         // Kiểm tra trạng thái lỗi trước khi gửi yêu cầu
         if (!paymentDetails.name.trim()) {
-            setErrors({...errors, name: 'Tên payment không được để trống'});
+            setErrors({...errors, name: t('payment name cannot be blank')});
             return;
         }
 
@@ -58,15 +58,15 @@ const AddPayment = ({ showSidebar }) => {
             data.success ? 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Thông báo',
-                    text: 'Payment added',
+                    title: t('title swal'),
+                    text: t('payment added'),
                     position: 'center',
                 }) 
             : 
                 Swal.fire({
                     icon: 'error',
-                    title: 'Thông báo',
-                    text: data.message,
+                    title: t('title swal'),
+                    text: t(data.message),
                     position: 'center',
                 })
         })
@@ -74,8 +74,8 @@ const AddPayment = ({ showSidebar }) => {
             console.error('Error:', error);
             Swal.fire({
                 icon: 'error',
-                title: 'Thông báo',
-                text: 'Failed to add payment',
+                title: t('title swal'),
+                text: t('failed to add payment'),
                 position: 'center',
             })
         });
@@ -88,21 +88,21 @@ const AddPayment = ({ showSidebar }) => {
                     <div className={`bg-white ${showSidebar ? 'w-[70%]' : 'w-[60%]'} transition-all duration-1000 h-[480px] rounded-md py-4 px-8 overflow-y-auto relative`}>
                         <div className="space-y-6 mt-4">
                             <div className="space-y-2">
-                                <p>Name</p>
+                                <p>{t('payment name')}</p>
                                 <input value={paymentDetails.name} onChange={changeHandler} type="text" name="name" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                                 {errors.name && <p className="text-red-500">{errors.name}</p>}
                             </div>
                             <div className="space-y-2">
-                                <p>Description</p>
+                                <p>{t('payment description')}</p>
                                 <input value={paymentDetails.description} onChange={changeHandler} type="text" name="description" className="w-[50%] px-2 py-1 border-[1px] border-primary" />
                             </div>
-                            <button onClick={() => Add_Payment()} className='btn-primary'>ADD</button>
+                            <button onClick={() => Add_Payment()} className='btn-primary uppercase'>{t('add')}</button>
                         </div>
                         <div className='absolute top-6 right-6 flex'>
                             <Link to={'/listpayment'} className="btn-primary rounded-md px-4">
                                 <div className='flex items-center gap-2'>
                                     <RiArrowGoBackLine />
-                                    Back to list
+                                    {t('back to list')}
                                 </div>
                             </Link>
                         </div>
