@@ -177,7 +177,7 @@ const MyOrders = () => {
             </div>
 
             {showConfirmation && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                <div className="fixed z-[999] inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
                         <p className="sm:text-lg text-sm">{t('are you sure you want to cancel this order')}?</p>
                         <div className="flex justify-end mt-4">

@@ -139,8 +139,8 @@ const ListOrder = ({ showSidebar }) => {
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
                     <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 pb-4 overflow-y-auto`}>
                         <div>
-                            <div className="fixed w-[1102px] bg-white z-10 py-4">
-                                <div className="flex items-center justify-between gap-4 mt-4">
+                            <div className={`fixed ${showSidebar ? 'order-width' : 'w-[80%]'} bg-white z-10 py-4`}>
+                                <div className="flex items-center justify-between gap mt-4">
                                     <h2 className="font-semibold text-2xl">{t('all order list')}</h2>
                                     <div className="flex items-center gap-4">
                                         <p>{t('sort by')}</p>
@@ -218,12 +218,23 @@ const ListOrder = ({ showSidebar }) => {
                                                                 <TbListDetails />
                                                             </div>
                                                         </Link>
-                                                        {getStatusName(order.status) === 'Cancelled' || getStatusName(order.status) === 'Delivered' && <div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
-                                                            <div className="flex items-center gap-1">
-                                                                {t('delete')}
-                                                                <RiDeleteBinLine />
-                                                            </div>
-                                                        </div>}
+                                                        {
+                                                            getStatusName(order.status) === 'Delivered' ? 
+                                                                (<div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
+                                                                    <div className="flex items-center gap-1">
+                                                                        {t('delete')}
+                                                                        <RiDeleteBinLine />
+                                                                    </div>
+                                                                </div>) : 
+                                                            getStatusName(order.status) === 'Cancelled' ?
+                                                                (<div className="w-[100px] py-2 justify-center rounded-md flex items-center cursor-pointer bg-red-300 hover:bg-red-400 text-white duration-300" onClick={() => openConfirmation(order._id)}>
+                                                                    <div className="flex items-center gap-1">
+                                                                        {t('delete')}
+                                                                        <RiDeleteBinLine />
+                                                                    </div>
+                                                                </div>) : 
+                                                                (<></>)
+                                                        }
                                                     </div>
                                             </div>
                                         </div>
@@ -236,7 +247,7 @@ const ListOrder = ({ showSidebar }) => {
             </div>
 
             {showConfirmation && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                <div className="fixed z-[999] inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white sm:p-8 p-4 sm:rounded-md rounded-sm w-[70%] sm:w-[40%]">
                         <p className="sm:text-lg text-sm">{t('are you sure you want to delete this order')}</p>
                         <div className="flex justify-end mt-4">

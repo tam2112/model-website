@@ -67,11 +67,11 @@ const ListSize = ({ showSidebar }) => {
     
     return (
         <>
-            <div className={`${showSidebar ? 'ml-[300px]' : 'ml-0'} transition-all duration-1000 py-4`}>
+            <div className={`${showSidebar ? 'lg:ml-[300px] ml-0' : 'ml-0'} lg:h-auto h-screen transition-all duration-1000 py-4`}>
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
-                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
+                    <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 lg:h-[680px] h-[740px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="fixed w-[1100px] bg-white z-10 py-4">
+                            <div className={`fixed ${showSidebar ? 'w-[70%]' : 'w-[80%]'} bg-white z-10 py-4`}>
                                 <div className="flex items-center justify-between">
                                     <h2 className="font-semibold text-2xl">{t('all sizes list')}</h2>
                                     <div className="flex items-center gap-6">
@@ -89,10 +89,10 @@ const ListSize = ({ showSidebar }) => {
                                         </Link>
                                     </div>
                                 </div>
-                                <div className="mt-8 sm:grid lg:grid-cols-[1.5fr_2fr_2fr] sm:grid-cols-[1.5fr_1.5fr_2fr] hidden">
+                                <div className="mt-8 grid lg:grid-cols-[1.5fr_2fr_2fr] grid-cols-[1.5fr_1.5fr_2fr]">
                                     <p className="ml-4">{t('size type')}</p>
-                                    <p>{t('size name')}</p>
-                                    <p className="ml-12">{t('functionality')}</p>
+                                    <p className="sm:ml-0 ml-1">{t('size name')}</p>
+                                    <p className="lg:ml-12 md:ml-28 ml-20 sm:mr-0 mr-2">{t('functionality')}</p>
                                 </div>
                                 <hr className="mt-4 sm:block hidden border-third border-2" />
                             </div>

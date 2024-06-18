@@ -71,7 +71,7 @@ const ListPayment = ({ showSidebar }) => {
                 <div className={`container ${showSidebar ? '' : 'grid place-items-center'}`}>
                     <div className={`bg-white ${showSidebar ? 'w-full' : 'w-[90%]'} transition-all duration-1000 h-[680px] rounded-md px-8 overflow-y-auto`}>
                         <div>
-                            <div className="fixed w-[1100px] bg-white py-4 z-10">
+                            <div className={`fixed ${showSidebar ? 'w-[70%]' : 'w-[80%]'} bg-white z-10 py-4`}>
                                 <div className="flex items-center justify-between gap-4 pb-8">
                                     <h2 className="font-semibold text-2xl">{t('all payment list')}</h2>
                                     <div className="flex items-center gap-6">

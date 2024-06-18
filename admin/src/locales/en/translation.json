@@ -34,6 +34,16 @@
     "pyramid": "Pyramid",
     "stacked": "Stacked",
 
+    "home": "Home",
+    "sales": "Sales",
+    "refunds": "Refunds",
+    "earnings": "Earnings",
+    "download": "Download",
+    "revenue update": "Revenue Update",
+    "expense": "Expense",
+    "budget": "Budget",
+    "download report": "Download Report",
+
     "add size title": "Add size",
     "size type cannot be blank": "Size type cannot be blank",
     "size name cannot be blank": "Size name cannot be blank",

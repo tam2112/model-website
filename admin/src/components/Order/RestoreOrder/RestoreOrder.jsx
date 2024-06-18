@@ -188,7 +188,7 @@ const RestoreOrder = ({ showSidebar }) => {
                 </div>
             </div>
             {showConfirmation && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                <div className="fixed z-[999] inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
                     <div className="bg-white p-8 rounded-md">
                         <p className="text-lg">Are you sure you want to delete this order permanently?</p>
                         <div className="flex justify-end mt-4">

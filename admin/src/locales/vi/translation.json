@@ -34,6 +34,16 @@
     "pyramid": "Kim tự tháp",
     "stacked": "Xếp chồng lên nhau",
 
+    "home": "Trang chủ",
+    "sales": "Đã đặt/bán",
+    "refunds": "Hoàn tiền",
+    "earnings": "Đã kiếm được",
+    "download": "Tải xuống",
+    "revenue update": "Cập nhật doanh thu",
+    "expense": "Chi phí",
+    "budget": "Ngân sách",
+    "download report": "Tải xuống báo cáo",
+
     "add size title": "Thêm kích cỡ",
     "size type cannot be blank": "Loại kích cỡ không được để trống",
     "size name cannot be blank": "Tên kích cỡ không được để trống",

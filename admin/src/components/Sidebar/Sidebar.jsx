@@ -1,13 +1,12 @@
-import { LuKanbanSquare, LuLayoutDashboard } from "react-icons/lu";
-import { CiCalendar, CiEdit, CiShoppingCart } from "react-icons/ci";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { CiShoppingCart } from "react-icons/ci";
 import { TbUsersPlus } from "react-icons/tb";
-import { IoColorFillOutline } from "react-icons/io5";
 import { PiChartLineLight, PiChartPieSliceLight } from "react-icons/pi";
 import { FaCaretUp, FaChartArea } from "react-icons/fa6";
 import { FaRegChartBar } from "react-icons/fa";
 import { RiDoubleQuotesL } from "react-icons/ri";
 import { MdOutlineCategory, MdOutlinePhotoSizeSelectLarge, MdOutlinePayments, MdOutlineProductionQuantityLimits, MdOutlineStackedBarChart } from "react-icons/md";
-import { HiOutlineChartBar } from "react-icons/hi";
+import { HiOutlineChartBar, HiOutlineMenuAlt1 } from "react-icons/hi";
 import { GrStatusDisabled } from "react-icons/gr";
 import { GiMoneyStack } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
@@ -15,7 +14,7 @@ import { useTranslation } from "react-i18next";
 
 import Logo from '../../assets/logo.png'
 
-const Sidebar = ({ showSidebar }) => {
+const Sidebar = ({ showSidebar, setShowSidebar }) => {
     const { t } = useTranslation();
 
     const activeLink = 'flex items-center gap-2 p-3 bg-primary text-white rounded-md cursor-pointer';
@@ -23,10 +22,13 @@ const Sidebar = ({ showSidebar }) => {
 
     return (
         <>
-            <div className={`fixed top-0 ${showSidebar ? 'left-0' : '-left-[100%]'} bottom-0 w-[20%] bg-white overflow-y-scroll transition-all duration-1000`}>
+            <div className={`fixed z-50 top-0 ${showSidebar ? 'left-0' : '-left-[100%]'} bottom-0 lg:w-[20%] sm:w-[32%] w-[70%] bg-white overflow-y-scroll overflow-x-hidden transition-all duration-1000`}>
                 <div className='p-4 pt-4 select-none'>
-                    <div className="mt-2">
-                        <img src={Logo} alt="" className='w-36' />
+                    <div className="mt-2 flex items-center justify-between">
+                        <img src={Logo} alt="" className='lg:w-36 w-28' />
+                        <div onClick={() => setShowSidebar(false)} className="lg:hidden block active:bg-primary active:text-white rounded-full">
+                            <HiOutlineMenuAlt1 size={24} />
+                        </div>
                     </div>
                     <div className="mt-12 space-y-6">
                         {/* Dashboard */}

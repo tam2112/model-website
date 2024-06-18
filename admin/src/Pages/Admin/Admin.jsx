@@ -11,11 +11,11 @@ import { ListOrder, DetailsOrder } from '../../components/Order'
 import Home from '../Home/Home'
 import { Calendar, Stacked, Pyramid, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from '../../Pages';
 
-const Admin = ({ showSidebar }) => {
+const Admin = ({ showSidebar, setShowSidebar }) => {
     return (
         <>
             <div>
-                <Sidebar showSidebar={showSidebar} />
+                <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
                 <Routes>
                     <Route path="/" element={<Home showSidebar={showSidebar} />} />
 
